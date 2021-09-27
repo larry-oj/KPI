@@ -8,27 +8,37 @@ namespace Lab1_1
     {
         static void Main(string[] args)
         {
-            int[] puzzle = // starting puzzle
-            {
-                1, 2, 3,
-                4, 5, 6,
-                0, 7, 8
-            };
+            
 
-            Shuffle(puzzle);
-
-
-            // Shuffle until solveable
-            while (!IsSolvable(puzzle))
-            {
-                Shuffle(puzzle);
-            }
-
-            var initialNode = new Node(puzzle); // root node
+            // initialNode.PrintPuzzle();
 
             var s = new Search();
 
-            var solution = s.LDFS(initialNode, 0, 20); // start search, 20 - depth limit
+            var succ = false;
+
+            while (!succ)
+            {
+                int[] puzzle = // starting puzzle
+                {
+                    1, 2, 3,
+                    4, 5, 6,
+                    0, 7, 8
+                };
+
+                Shuffle(puzzle);
+
+
+                // Shuffle until solveable
+                while (!IsSolvable(puzzle))
+                {
+                    Shuffle(puzzle);
+                }
+
+                var initialNode = new Node(puzzle); // root node
+                succ = s.LDFS(initialNode, 0, 10); // start search, 20 - depth limit
+            }
+            
+            
 
             // Print solution to console
             s.PathToSolution.Reverse();

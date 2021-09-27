@@ -14,16 +14,18 @@ namespace Lab1_1
         public Node(int[] puzzle)
         {
             this.Children = new List<Node>();
+
             this.Puzzle = new int[9];
-            this.X = 0;
             SetPuzzle(puzzle);
+
+            this.X = 0;
         }
 
         private void SetPuzzle(int[] puzzle) // sets current state. (avoids pointers)
         {
             for (int i = 0; i < this.Puzzle.Length; i++)
             {
-                Puzzle[i] = puzzle[i];
+                this.Puzzle[i] = puzzle[i];
             }
         }
 
