@@ -12,7 +12,7 @@ namespace Lab1_1
             this.PathToSolution = new List<Node>();
         }
 
-        public bool LDFS(Node node, int depth, int limit) // LDFS = DLS = Depth-limited search
+        public bool LDFS(Node node, int depth, int limit, ref int deadEnds, ref int iterations, ref int states) // LDFS = DLS = Depth-limited search
         {
             if (depth < limit)
             {
@@ -23,15 +23,22 @@ namespace Lab1_1
                 }
 
                 node.Expand();
+                iterations++;
+
+                states += node.Children.Count;
 
                 foreach (var child in node.Children)
                 {
-                    if (LDFS(child, depth + 1, limit))
+                    if (LDFS(child, depth + 1, limit, ref deadEnds, ref iterations, ref states))
                     {
                         PathToSolution.Add(node);
                         return true;
                     }
                 }
+            }
+            else
+            {
+                deadEnds++;
             }
 
             return false;

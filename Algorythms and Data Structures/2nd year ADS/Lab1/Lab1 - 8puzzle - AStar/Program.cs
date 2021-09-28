@@ -14,7 +14,7 @@ namespace Lab1_2
                 4, 7, 8
             };
 
-            // Shuffle(puzzle);
+            Shuffle(puzzle);
 
             while (!IsSolvable(puzzle))
             {
@@ -25,13 +25,18 @@ namespace Lab1_2
 
             var s = new Search();
 
-            s.AStar(initialNode);
+            var success = s.AStar(initialNode);
+
+            if(!success)
+            {
+                System.Console.WriteLine("No solution found");
+            }
 
             s.PathToSolution.Reverse();
-            // initialNode.PrintPuzzle();
             foreach (var item in s.PathToSolution)
             {
                 item.PrintPuzzle();
+                item.PrintState();
             }
         }
 

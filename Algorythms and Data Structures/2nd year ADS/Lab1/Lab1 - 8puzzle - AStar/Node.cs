@@ -239,7 +239,7 @@ namespace Lab1_2
 
         public void PrintState()
         {
-            System.Console.WriteLine($"g = {G}; f = {F};");
+            System.Console.WriteLine($"[g = {G}; h = {H} f = {F};]");
         }
 
         public bool IsSamePuzzle(int[] puzzle) 

@@ -8,44 +8,54 @@ namespace Lab1_1
     {
         static void Main(string[] args)
         {
-            
+            var success = false;
 
-            // initialNode.PrintPuzzle();
-
-            var s = new Search();
-
-            var succ = false;
-
-            while (!succ)
+            int[] puzzle = // starting puzzle
             {
-                int[] puzzle = // starting puzzle
-                {
-                    1, 2, 3,
-                    4, 5, 6,
-                    0, 7, 8
-                };
+                1, 2, 3,
+                4, 5, 6,
+                0, 7, 8
+            };
 
-                Shuffle(puzzle);
-
+            var tmp = 0;
+            while (tmp < 20)
+            {
+                var s = new Search();
 
                 // Shuffle until solveable
+                Shuffle(puzzle);
                 while (!IsSolvable(puzzle))
                 {
                     Shuffle(puzzle);
                 }
 
+                // Create measurements tools
+                var iterations = 0;
+                var deadEnds = 0;
+                var states = 1;
+                var statesInMemory = 0;
+
                 var initialNode = new Node(puzzle); // root node
-                succ = s.LDFS(initialNode, 0, 10); // start search, 20 - depth limit
+
+                success = s.LDFS(initialNode, 0, 10, ref deadEnds, ref iterations, ref states); // start search, 20 - depth limit
+
+                if (!success) continue;
+                initialNode.PrintPuzzle();
+
+                statesInMemory = s.PathToSolution.Count;
+
+                System.Console.WriteLine($"Success: {success}\nIterations: {iterations}\nDead ends: {deadEnds}\nTotal states: {states}\nStates in memory: {statesInMemory}");
+                tmp++;
             }
             
             
 
             // Print solution to console
-            s.PathToSolution.Reverse();
-            foreach(var node in s.PathToSolution)
-            {
-                node.PrintPuzzle();
-            }
+            // s.PathToSolution.Reverse();
+            // foreach(var node in s.PathToSolution)
+            // {
+            //     node.PrintPuzzle();
+            // }
         }
 
         public static void Shuffle(IList<int> list, Random rng = null) // Shuffles current puzzle

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using System;
+using System.Linq;
 
 namespace Lab1_2
 {
@@ -23,6 +23,8 @@ namespace Lab1_2
 
             while (openList.Count > 0 && !goalFound)
             {
+                openList = openList.OrderBy(n => n.F).ToList();
+                
                 var currentNode = openList[0];
                 closedList.Add(openList[0]);
                 openList.RemoveAt(0);
@@ -52,7 +54,6 @@ namespace Lab1_2
 
         public void PathTrace(ref List<Node> path, Node childNode)
         {
-            System.Console.WriteLine("Tracing path");
             var currentNode = childNode;
 
             path.Add(currentNode);
