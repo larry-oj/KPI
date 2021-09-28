@@ -8,8 +8,6 @@ namespace Lab1_1
     {
         static void Main(string[] args)
         {
-            var success = false;
-
             int[] puzzle = // starting puzzle
             {
                 1, 2, 3,
@@ -17,9 +15,9 @@ namespace Lab1_1
                 0, 7, 8
             };
 
-            var tmp = 0;
-            while (tmp < 20)
+            while (true)
             {
+                var success = false;
                 var s = new Search();
 
                 // Shuffle until solveable
@@ -39,13 +37,16 @@ namespace Lab1_1
 
                 success = s.LDFS(initialNode, 0, 10, ref deadEnds, ref iterations, ref states); // start search, 20 - depth limit
 
-                if (!success) continue;
-                initialNode.PrintPuzzle();
+                if (success)
+                {
+                    initialNode.PrintPuzzle();
 
-                statesInMemory = s.PathToSolution.Count;
+                    statesInMemory = s.PathToSolution.Count;
 
-                System.Console.WriteLine($"Success: {success}\nIterations: {iterations}\nDead ends: {deadEnds}\nTotal states: {states}\nStates in memory: {statesInMemory}");
-                tmp++;
+                    System.Console.WriteLine($"Success: {success}\nIterations: {iterations}\nDead ends: {deadEnds}\nTotal states: {states}\nStates in memory: {statesInMemory}");
+                
+                    break;
+                }
             }
             
             
