@@ -6,10 +6,16 @@ namespace Lab1_2
     class Search
     {
         public List<Node> PathToSolution;
+        public int Iterations { get; set; }
+        public int DeadEnds { get; set; }
+        public int States { get; set; }
 
         public Search()
         {
             this.PathToSolution = new List<Node>();
+            this.Iterations = 0;
+            this.DeadEnds = 0;
+            this.States = 1;
         }
 
         public bool AStar(Node root)
@@ -29,7 +35,11 @@ namespace Lab1_2
                 closedList.Add(openList[0]);
                 openList.RemoveAt(0);
 
+                Iterations++;
+
                 currentNode.Expand();
+
+                States += currentNode.Children.Count;
 
                 foreach (var child in currentNode.Children)
                 {
@@ -45,6 +55,10 @@ namespace Lab1_2
                     if (!Contains(openList, child) && !Contains(closedList, child))
                     {
                         openList.Add(child);
+                    }
+                    else
+                    {
+                        DeadEnds++;
                     }
                 }
             }

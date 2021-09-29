@@ -152,69 +152,50 @@ namespace Lab1_2
                 }
             }
 
-            MoveRight(Puzzle, X);
-            MoveLeft(Puzzle, X);
-            MoveUp(Puzzle, X);
-            MoveDown(Puzzle, X);
-
-            Children = Children.OrderBy(c => c.F).ToList();
-        }
-
-        public void MoveRight(int[] puzzle, int index)
-        {
-            if (index % 3 < 3 - 1)
+            if (X % 3 < 3 - 1)
             {
                 int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
+                CopyPuzzle(ref childPuzzle, Puzzle);
 
-                int tmp = childPuzzle[index + 1];
-                childPuzzle[index + 1] = childPuzzle[index];
-                childPuzzle[index] = tmp;
+                int tmp = childPuzzle[X + 1];
+                childPuzzle[X + 1] = childPuzzle[X];
+                childPuzzle[X] = tmp;
 
                 Node child = new Node(childPuzzle, G + 1, this);
                 Children.Add(child);
             }
-        }
-        public void MoveLeft(int[] puzzle, int index)
-        {
-            if (index % 3 > 0)
+            if (X % 3 > 0)
             {
                 int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
+                CopyPuzzle(ref childPuzzle, Puzzle);
 
-                int tmp = childPuzzle[index - 1];
-                childPuzzle[index - 1] = childPuzzle[index];
-                childPuzzle[index] = tmp;
+                int tmp = childPuzzle[X - 1];
+                childPuzzle[X - 1] = childPuzzle[X];
+                childPuzzle[X] = tmp;
 
                 Node child = new Node(childPuzzle, G + 1, this);
                 Children.Add(child);
             }
-        }
-        public void MoveUp(int[] puzzle, int index)
-        {
-            if (index - 3 >= 0)
+            if (X - 3 >= 0)
             {
                 int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
+                CopyPuzzle(ref childPuzzle, Puzzle);
 
-                int tmp = childPuzzle[index - 3];
-                childPuzzle[index - 3] = childPuzzle[index];
-                childPuzzle[index] = tmp;
+                int tmp = childPuzzle[X - 3];
+                childPuzzle[X - 3] = childPuzzle[X];
+                childPuzzle[X] = tmp;
 
                 Node child = new Node(childPuzzle, G + 1, this);
                 Children.Add(child);
             }
-        }
-        public void MoveDown(int[] puzzle, int index)
-        {
-            if (index + 3 < puzzle.Length)
+            if (X + 3 < Puzzle.Length)
             {
                 int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
+                CopyPuzzle(ref childPuzzle, Puzzle);
 
-                int tmp = childPuzzle[index + 3];
-                childPuzzle[index + 3] = childPuzzle[index];
-                childPuzzle[index] = tmp;
+                int tmp = childPuzzle[X + 3];
+                childPuzzle[X + 3] = childPuzzle[X];
+                childPuzzle[X] = tmp;
 
                 Node child = new Node(childPuzzle, G + 1, this);
                 Children.Add(child);

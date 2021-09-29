@@ -8,34 +8,45 @@ namespace Lab1_3
     {
         static void Main(string[] args)
         {
-            int[] puzzle = // starting puzzle
-            {
-                0, 2, 3,
-                1, 5, 6,
-                4, 7, 8
-            };
-
-            // Shuffle(puzzle);
-
-
-            // Shuffle until solveable
-            while (!IsSolvable(puzzle))
-            {
-                Shuffle(puzzle);
-            }
-
-            var initialNode = new Node(puzzle, 0); // root node
-            // initialNode.PrintPuzzle();
-
             var s = new Search();
 
-            s.RBFS(initialNode, initialNode.F);
-
-            s.PathToSolution.Reverse();
-            initialNode.PrintPuzzle();
-            foreach(var item in s.PathToSolution)
+            int[] puzzle =
             {
-                item.PrintPuzzle();
+                1, 0, 5, 
+                4, 3, 2, 
+                7, 8, 6
+            };
+
+            // Shuffle until solveable
+            // Shuffle(puzzle);
+            // while (!IsSolvable(puzzle))
+            // {
+            //     Shuffle(puzzle);
+            // }
+            
+            var iterations = 0;
+            var deadEnds = 0;
+            var states = 1;
+            var statesInMemory = 0;
+
+            var initialNode = new Node(puzzle, 0); // root node
+
+            var success = s.RBFS(initialNode, int.MaxValue, ref iterations, ref deadEnds, ref states);
+
+            if (success)
+            {
+                s.PathToSolution.Reverse();
+
+                initialNode.PrintPuzzle();
+
+                // foreach (var item in s.PathToSolution)
+                // {
+                //     item.PrintPuzzle();
+                // }
+
+                statesInMemory = s.PathToSolution.Count;
+
+                System.Console.WriteLine($"Success: {success}\nIterations: {iterations}\nDead ends: {deadEnds}\nTotal states: {states}\nStates in memory: {statesInMemory}");
             }
         }
 

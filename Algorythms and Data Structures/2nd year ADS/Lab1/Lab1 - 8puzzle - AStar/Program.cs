@@ -9,12 +9,12 @@ namespace Lab1_2
         {
             int[] puzzle =
             {
-                0, 2, 3,
-                1, 5, 6,
-                4, 7, 8
+                1, 5, 2, 
+                4, 8, 3, 
+                7, 6, 0
             };
 
-            Shuffle(puzzle);
+            // Shuffle(puzzle);
 
             while (!IsSolvable(puzzle))
             {
@@ -27,17 +27,12 @@ namespace Lab1_2
 
             var success = s.AStar(initialNode);
 
-            if(!success)
-            {
-                System.Console.WriteLine("No solution found");
-            }
-
             s.PathToSolution.Reverse();
             foreach (var item in s.PathToSolution)
             {
                 item.PrintPuzzle();
-                item.PrintState();
             }
+            System.Console.WriteLine($"\nSuccess: {success}\nIterations: {s.Iterations}\nDead ends: {s.DeadEnds}\nTotal states: {s.States}\nStates in memory: {s.PathToSolution.Count}");
         }
 
         public static void Shuffle(IList<int> list, Random rng = null) // Shuffles current puzzle

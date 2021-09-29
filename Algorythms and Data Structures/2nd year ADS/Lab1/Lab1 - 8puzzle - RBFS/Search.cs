@@ -14,7 +14,7 @@ namespace Lab1_3
             this.PathToSolution = new List<Node>();
         }
 
-        public bool RBFS(Node node, int fLimit)
+        public bool RBFS(Node node, int fLimit, ref int iterations, ref int deadEnds, ref int states)
         {
             if (node.IsReachedGoal())
             {
@@ -23,8 +23,9 @@ namespace Lab1_3
             }
 
             node.Expand();
+            states += node.Children.Count;
 
-            for (int i = 0; i < node.Children.Count(); i++)
+            for (int i = 0; i < node.Children.Count; i++)
             {
                 node.Children[i].F = Math.Max(node.Children[i].F, node.F);
             }
@@ -33,18 +34,30 @@ namespace Lab1_3
             
             // node.PrintPuzzle();
 
-            while(true)
+            var tmp = node.Children.Count;
+            for (int i = 0; i < tmp; i++)
             {
+                iterations++;
                 var bestNode = node.Children[0];
                 if (bestNode.F > fLimit) return false;
-                var alternativeNode = node.Children[1];
-                var result = RBFS(bestNode, Math.Min(fLimit, alternativeNode.F));
+
+                Node alternativeNode = null;
+                if (node.Children.Count > 1) alternativeNode = node.Children[1];
+
+                var result = RBFS(bestNode, alternativeNode == null ? fLimit : Math.Min(fLimit, alternativeNode.F), ref iterations, ref deadEnds, ref states);
+
                 if (result)
                 {
                     PathToSolution.Add(bestNode);
                     return true;
-                } 
+                }
+                else
+                {
+                    deadEnds++;
+                }
+                node.Children.RemoveAt(0);
             }
+            return false;
         }
 
         // public Node RBFS(Node node, int fLimit)
