@@ -6,9 +6,9 @@ namespace Lab1_2
     class Search
     {
         public List<Node> PathToSolution;
-        public int Iterations { get; set; }
-        public int DeadEnds { get; set; }
-        public int States { get; set; }
+        public int Iterations { get; private set; }
+        public int DeadEnds { get; private set; }
+        public int States { get; private set; }
 
         public Search()
         {

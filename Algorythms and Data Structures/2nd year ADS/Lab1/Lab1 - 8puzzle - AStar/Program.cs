@@ -9,17 +9,21 @@ namespace Lab1_2
         {
             int[] puzzle =
             {
-                1, 5, 2, 
-                4, 8, 3, 
-                7, 6, 0
+                1, 2, 3, 
+                8, 5, 6,
+                4, 0, 7
             };
 
-            // Shuffle(puzzle);
-
-            while (!IsSolvable(puzzle))
             {
+                /* 
                 Shuffle(puzzle);
-            }
+
+                while (!IsSolvable(puzzle))
+                {
+                    Shuffle(puzzle);
+                } 
+            */
+            }            
 
             var initialNode = new Node(puzzle, 0, null);
 

@@ -204,7 +204,6 @@ namespace Lab1_2
 
         public void PrintPuzzle()
         {
-            System.Console.WriteLine();
             var m = 0;
 
             for (int row = 0; row < 3; row++)
@@ -216,6 +215,7 @@ namespace Lab1_2
                 }
                 System.Console.WriteLine();
             }
+            System.Console.WriteLine();
         }
 
         public void PrintState()

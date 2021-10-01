@@ -52,75 +52,55 @@ namespace Lab1_1
                 }
             }
 
-            MoveRight(Puzzle, X);
-            MoveLeft(Puzzle, X);
-            MoveUp(Puzzle, X);
-            MoveDown(Puzzle, X);
-        }
-
-
-        #region Move Empty Space
-        private void MoveRight(int[] puzzle, int index) 
-        {
-            if (index % 3 < 3 - 1)
+            if (X % 3 < 3 - 1)
             {
                 int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
+                CopyPuzzle(ref childPuzzle, Puzzle);
 
-                int tmp = childPuzzle[index + 1];
-                childPuzzle[index + 1] = childPuzzle[index];
-                childPuzzle[index] = tmp;
+                int tmp = childPuzzle[X + 1];
+                childPuzzle[X + 1] = childPuzzle[X];
+                childPuzzle[X] = tmp;
+
+                Node child = new Node(childPuzzle);
+                Children.Add(child);
+            }
+            if (X % 3 > 0)
+            {
+                int[] childPuzzle = new int[9];
+                CopyPuzzle(ref childPuzzle, Puzzle);
+
+                int tmp = childPuzzle[X - 1];
+                childPuzzle[X - 1] = childPuzzle[X];
+                childPuzzle[X] = tmp;
+
+                Node child = new Node(childPuzzle);
+                Children.Add(child);
+            }
+            if (X - 3 >= 0)
+            {
+                int[] childPuzzle = new int[9];
+                CopyPuzzle(ref childPuzzle, Puzzle);
+
+                int tmp = childPuzzle[X - 3];
+                childPuzzle[X - 3] = childPuzzle[X];
+                childPuzzle[X] = tmp;
+
+                Node child = new Node(childPuzzle);
+                Children.Add(child);
+            }
+            if (X + 3 < Puzzle.Length)
+            {
+                int[] childPuzzle = new int[9];
+                CopyPuzzle(ref childPuzzle, Puzzle);
+
+                int tmp = childPuzzle[X + 3];
+                childPuzzle[X + 3] = childPuzzle[X];
+                childPuzzle[X] = tmp;
 
                 Node child = new Node(childPuzzle);
                 Children.Add(child);
             }
         }
-        private void MoveLeft(int[] puzzle, int index)
-        {
-            if (index % 3 > 0)
-            {
-                int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
-
-                int tmp = childPuzzle[index - 1];
-                childPuzzle[index - 1] = childPuzzle[index];
-                childPuzzle[index] = tmp;
-
-                Node child = new Node(childPuzzle);
-                Children.Add(child);
-            }
-        }
-        private void MoveUp(int[] puzzle, int index)
-        {
-            if (index - 3 >= 0)
-            {
-                int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
-
-                int tmp = childPuzzle[index - 3];
-                childPuzzle[index - 3] = childPuzzle[index];
-                childPuzzle[index] = tmp;
-
-                Node child = new Node(childPuzzle);
-                Children.Add(child);
-            }
-        }
-        private void MoveDown(int[] puzzle, int index)
-        {
-            if (index + 3 < puzzle.Length)
-            {
-                int[] childPuzzle = new int[9];
-                CopyPuzzle(ref childPuzzle, puzzle);
-
-                int tmp = childPuzzle[index + 3];
-                childPuzzle[index + 3] = childPuzzle[index];
-                childPuzzle[index] = tmp;
-
-                Node child = new Node(childPuzzle);
-                Children.Add(child);
-            }
-        }
-        #endregion
 
         private void CopyPuzzle(ref int[] a, int[] b) // copies puzzle (avoids pointers)
         {
@@ -132,7 +112,6 @@ namespace Lab1_1
 
         public void PrintPuzzle() // prints puzzle to console
         {
-            System.Console.WriteLine();
             var m = 0;
 
             for (int row = 0; row < 3; row++)
@@ -144,6 +123,7 @@ namespace Lab1_1
                 }
                 System.Console.WriteLine();
             }
+            // System.Console.WriteLine();
         }
     }
 }
