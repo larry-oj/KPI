@@ -22,7 +22,7 @@ namespace Lab1_2
                 {
                     Shuffle(puzzle);
                 } 
-            */
+                */
             }            
 
             var initialNode = new Node(puzzle, 0, null);
