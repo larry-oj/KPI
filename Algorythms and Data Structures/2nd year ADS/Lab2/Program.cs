@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,32 +22,28 @@ namespace Lab2
             List<int> randomKeys = new List<int>();
 
             {
-                /*
-                for (int i = 0; i < 10000; i++)
-                {
-                    randomKeys.Add(i);
-                }
+                // for (int i = 0; i < 10000; i++)
+                // {
+                //     randomKeys.Add(i);
+                // }
 
-                Shuffle(randomKeys);
+                // Shuffle(randomKeys);
 
-                for (int i = 0; i < 10000; i++)
-                {
-                    var player = new Player {
-                        Id = randomKeys[i],
-                        Nickname = RandomString(10),
-                        Level = random.Next(5, 100),
-                        Money = random.Next(0, 1000000),
-                        Clan = RandomString(20),
-                    };
-                    context.Insert(player);
-                    System.Console.WriteLine($"Added #{i}");
-                }
-                */
+                // for (int i = 0; i < 10000; i++)
+                // {
+                //     var player = new Player {
+                //         Id = i,
+                //         Nickname = RandomString(10),
+                //         Level = random.Next(5, 100),
+                //         Money = random.Next(0, 1000000),
+                //         Clan = RandomString(20),
+                //     };
+                //     context.Insert(player);
+                //     // System.Console.WriteLine($"Added #{i}");
+                // }
             }
-            
-            var smth = context.Select(0);
 
-            System.Console.WriteLine($"{smth.Key} - {smth.Nickname}");
+            // . . .
         }
 
         static string RandomString(int length)
