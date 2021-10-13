@@ -209,7 +209,6 @@ namespace Lab2.Database
         
             return false;
         }   
-
         public T Select(int key) // retrieve data from db using dbindex
         {
             int blockIndex = -1;
@@ -245,10 +244,41 @@ namespace Lab2.Database
 
             return result;
         }
-
         public bool Delete(int key) // delete data from db and dbindex
         {
-            throw new NotImplementedException();
+            var item = this.Select(key);
+
+            if (item == null) return false;
+
+            int blockIndex = -1;
+            bool isOverflow = false;
+
+            foreach (var pair in _index) // find where key should be stored
+            {
+                if (pair.Key < item.Key)
+                {
+                    blockIndex = pair.Location;
+                }
+            }
+
+            if (blockIndex == -1) // if key is out of boundries of index
+            {
+                isOverflow = true;
+            }
+
+            if (!isOverflow)
+            {
+                _data[blockIndex].Remove(item);
+                return SaveData(blockIndex);
+            }
+
+            if (isOverflow)
+            {
+                _overflow.Remove(item);
+                return SaveOverflow();
+            }
+
+            return false;
         }
 
 
