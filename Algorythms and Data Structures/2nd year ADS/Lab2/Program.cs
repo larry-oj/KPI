@@ -19,29 +19,7 @@ namespace Lab2
 
             var context = new DbContext<Player>(path);
 
-            List<int> randomKeys = new List<int>();
-
-            {
-                // for (int i = 0; i < 10000; i++)
-                // {
-                //     randomKeys.Add(i);
-                // }
-
-                // Shuffle(randomKeys);
-
-                // for (int i = 0; i < 10000; i++)
-                // {
-                //     var player = new Player {
-                //         Id = i,
-                //         Nickname = RandomString(10),
-                //         Level = random.Next(5, 100),
-                //         Money = random.Next(0, 1000000),
-                //         Clan = RandomString(20),
-                //     };
-                //     context.Insert(player);
-                //     // System.Console.WriteLine($"Added #{i}");
-                // }
-            }
+            // Randomize(ref context);
 
             // . . .
         }
@@ -63,6 +41,32 @@ namespace Lab2
                 int value = list[k];
                 list[k] = list[n];
                 list[n] = value;
+            }
+        }
+    
+        static void Randomize(ref DbContext<Player> context)
+        {
+            List<int> randomKeys = new List<int>();
+
+            for (int i = 0; i < 6500; i++)
+            {
+                randomKeys.Add(i);
+            }
+
+            Shuffle(randomKeys);
+
+            for (int i = 0; i < 6500; i++)
+            {
+                var player = new Player
+                {
+                    Id = randomKeys[i],
+                    Nickname = RandomString(10),
+                    Level = random.Next(5, 100),
+                    Money = random.Next(0, 1000000),
+                    Clan = RandomString(20),
+                };
+                var succ = context.Insert(player);
+                System.Console.WriteLine($"#{i + 1} = {succ} - {player.Id}");
             }
         }
     }
