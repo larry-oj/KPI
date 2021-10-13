@@ -226,7 +226,7 @@ namespace Lab2.Database
             
             if (!isOverflow) // if its not in overflow
             {
-                result = (T)UniformBinarySearch(_data[blockIndex], key);
+                result = UniformBinarySearch(_data[blockIndex], key);
                 if (result == null)
                 {
                     isOverflow = true;
@@ -235,7 +235,7 @@ namespace Lab2.Database
 
             if (isOverflow) // if its in overflow
             {
-                result = (T)UniformBinarySearch(_overflow, key);
+                result = UniformBinarySearch(_overflow, key);
             }
 
             return result;
@@ -278,7 +278,7 @@ namespace Lab2.Database
         }
 
 
-        private object UniformBinarySearch(dynamic data, int key) // search in dbindex
+        private T UniformBinarySearch(List<T> data, int key) // search in dbindex
         {
             int n = data.Count;
 
@@ -287,7 +287,7 @@ namespace Lab2.Database
             int average;
             int first = 0;
             int last = n - 1;
-            object result = null;
+            T result = default(T);
             
             while (first < last)
             {
