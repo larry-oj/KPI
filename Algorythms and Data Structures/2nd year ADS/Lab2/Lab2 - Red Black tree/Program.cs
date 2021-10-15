@@ -157,7 +157,7 @@ namespace Lab2_RB_Tree
             {
                 root = Y;
             }
-            if (X == X.parent.left)
+            else if (X.parent.left != null && X == X.parent.left)
             {
                 X.parent.left = Y;
             }
@@ -190,11 +190,11 @@ namespace Lab2_RB_Tree
             {
                 root = X;
             }
-            if (Y == Y.parent.right)
+            if (Y.parent.right != null && Y == Y.parent.right)
             {
                 Y.parent.right = X;
             }
-            if (Y == Y.parent.left)
+            if (Y.parent.left != null && Y == Y.parent.left)
             {
                 Y.parent.left = X;
             }
@@ -223,11 +223,11 @@ namespace Lab2_RB_Tree
                     {
                         temp = temp.left;
                     }
-                    if (key > temp.data.PK)
+                    else if (key > temp.data.PK)
                     {
                         temp = temp.right;
                     }
-                    if (key == temp.data.PK)
+                    else if (key == temp.data.PK)
                     {
                         isFound = true;
                         item = temp;
@@ -324,7 +324,7 @@ namespace Lab2_RB_Tree
             newItem.colour = Color.Red; //colour the new node red
 
             //check for violations and fix
-            
+            InsertFixUp(newItem);
         }
         public void Insert(int key, string data)
         {
