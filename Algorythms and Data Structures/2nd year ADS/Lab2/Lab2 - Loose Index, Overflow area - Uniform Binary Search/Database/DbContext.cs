@@ -13,6 +13,8 @@ namespace Lab2.Database
         private List<T> _overflow;
         private List<Models.Index> _index;
 
+        public int Comparisons { get; private set; }
+
         public DbContext(string connectionString)
         {
             this._connectionString = connectionString;
@@ -21,12 +23,14 @@ namespace Lab2.Database
             this._index = new List<Models.Index>();
 
             SetIndex(); // _index
-            SetData();  // _data
-            SetOverflow();
+            SetData(); // _data
+            SetOverflow(); // _overflow
+
+            this.Comparisons = 0;
         }
 
 
-        private void SetIndex() // sets current index
+        private void SetIndex() 
         {
             try
             {
@@ -53,7 +57,7 @@ namespace Lab2.Database
                 throw new Exception("Failed retrieving index");
             }
         }
-        private void SetData() // sets current data
+        private void SetData() 
         {
             try
             {
@@ -98,7 +102,7 @@ namespace Lab2.Database
                 throw new Exception("Failed retrieveing data");
             }
         }
-        private void SetOverflow() // sets current oveflow data
+        private void SetOverflow() 
         {
             try
             {
@@ -127,7 +131,7 @@ namespace Lab2.Database
         }
 
 
-        public bool Insert(T item) // add data to db & dbindex
+        public bool Insert(T item) 
         {
             if (this.Select(item.Key) != null) return false;
 
@@ -136,9 +140,10 @@ namespace Lab2.Database
 
             foreach (var pair in _index) // find where key should be stored
             {
-                if (pair.Key < item.Key)
+                if (pair.Key > item.Key)
                 {
                     blockIndex = pair.Location;
+                    break;
                 }
             }
 
@@ -205,17 +210,20 @@ namespace Lab2.Database
         
             return false;
         }   
-        public T Select(int key) // retrieve data from db using dbindex
+        public T Select(int key) 
         {
+            this.Comparisons = 0;
+
             int blockIndex = -1;
             bool isOverflow = false;
             T result = default(T);
 
             foreach (var pair in _index) // find where key could be stored
             {
-                if (pair.Key < key)
+                if (pair.Key > key)
                 {
                     blockIndex = pair.Location;
+                    break;
                 }
             }
 
@@ -240,7 +248,49 @@ namespace Lab2.Database
 
             return result;
         }
-        public bool Delete(int key) // delete data from db and dbindex
+        public bool Edit(T item)
+        {
+            var itemToEdit = Select(item.Key);
+
+            if (itemToEdit == null) return false;
+
+            bool isOverflow = false;
+            int blockIndex = -1;
+            foreach (var pair in _index) // find where key could be stored
+            {
+                if (pair.Key > item.Key)
+                {
+                    blockIndex = pair.Location;
+                    break;
+                }
+            }
+
+            if (blockIndex == -1) // if key is out of boundries of index
+            {
+                isOverflow = true;
+            }
+
+            if (!isOverflow) // if its not in overflow
+            {
+                var tmp = _data[blockIndex].IndexOf(itemToEdit);
+
+                _data[blockIndex][tmp] = item;
+
+                return SaveData(blockIndex);
+            }
+
+            if (isOverflow) // if its in overflow
+            {
+                var tmp = _overflow.IndexOf(itemToEdit);
+
+                _overflow[tmp] = item;
+
+                return SaveOverflow();
+            }
+
+            return false;
+        }
+        public bool Delete(int key) 
         {
             var item = this.Select(key);
 
@@ -251,9 +301,10 @@ namespace Lab2.Database
 
             foreach (var pair in _index) // find where key should be stored
             {
-                if (pair.Key < item.Key)
+                if (pair.Key > item.Key)
                 {
                     blockIndex = pair.Location;
+                    break;
                 }
             }
 
@@ -278,7 +329,7 @@ namespace Lab2.Database
         }
 
 
-        private T UniformBinarySearch(List<T> data, int key) // search in dbindex
+        private T UniformBinarySearch(List<T> data, int key)
         {
             int n = data.Count;
 
@@ -291,7 +342,10 @@ namespace Lab2.Database
             
             while (first < last)
             {
+                this.Comparisons++;
+
                 average = first + (last - first) / 2;
+                
                 if (key == data[first].Key)
                 {
                     result = data[first];
@@ -322,7 +376,7 @@ namespace Lab2.Database
         }
 
 
-        public bool SaveIndex() // edit data & dbindex data
+        public bool SaveIndex() 
         {
             var path = _connectionString + $"/index.json";
 
@@ -334,7 +388,7 @@ namespace Lab2.Database
 
             return true;
         }
-        public bool SaveData(int blockIndex) // edit data & dbindex data
+        public bool SaveData(int blockIndex) 
         {
             var dataBlock = _data[blockIndex];
             
@@ -358,7 +412,7 @@ namespace Lab2.Database
 
             return true;
         }
-        public bool SaveOverflow() // edit data & dbindex data
+        public bool SaveOverflow() 
         {
             var path = _connectionString + $"/overflow.json";
 

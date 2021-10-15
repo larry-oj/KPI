@@ -16,9 +16,12 @@ namespace Lab2
 
             var context = new DbContext<Player>(path);
 
-            // Randomize(ref context);
+            Randomize(ref context);
 
             // . . .
+
+            System.Console.WriteLine(context.Select(1));
+            System.Console.WriteLine(context.Comparisons);
         }
 
         static string RandomString(int length)
@@ -63,7 +66,7 @@ namespace Lab2
                     Clan = RandomString(20),
                 };
                 var succ = context.Insert(player);
-                System.Console.WriteLine($"#{i + 1} = {succ} - {player.Id}");
+                // System.Console.WriteLine($"#{i + 1} = {succ} - {player.Id}");
             }
         }
     }
