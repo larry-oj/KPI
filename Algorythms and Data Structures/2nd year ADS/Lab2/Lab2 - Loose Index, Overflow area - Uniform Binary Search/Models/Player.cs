@@ -1,9 +1,10 @@
+using System;
 using Lab2.Database.Models;
 using System.Text.Json.Serialization;
 
 namespace Lab2.Models
 {
-    public class Player : IDataModel
+    public class Player : IDataModel, ICloneable
     {
         [JsonIgnore]
         public int Key {
@@ -25,5 +26,10 @@ namespace Lab2.Models
         
         [JsonPropertyName("clan")]
         public string Clan { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }

@@ -30,7 +30,7 @@ namespace Lab2.Database
         }
 
 
-        private void SetIndex() 
+        private void SetIndex()
         {
             try
             {
@@ -57,15 +57,15 @@ namespace Lab2.Database
                 throw new Exception("Failed retrieving index");
             }
         }
-        private void SetData() 
+        private void SetData()
         {
             try
             {
                 var blocks = Directory.GetFiles(_connectionString, @"*data.json");
 
-                if (blocks.Length < 12)
+                if (blocks.Length < 20)
                 {
-                    for (int i = 0; i < 12; i++)
+                    for (int i = 0; i < 20; i++)
                     {
                         var tmp = "";
                         if (i < 10)
@@ -102,7 +102,7 @@ namespace Lab2.Database
                 throw new Exception("Failed retrieveing data");
             }
         }
-        private void SetOverflow() 
+        private void SetOverflow()
         {
             try
             {
@@ -131,7 +131,7 @@ namespace Lab2.Database
         }
 
 
-        public bool Insert(T item) 
+        public bool Insert(T item)
         {
             if (this.Select(item.Key) != null) return false;
 
@@ -164,7 +164,7 @@ namespace Lab2.Database
                     return SaveData(blockIndex);
                 }
 
-                for (int i = 0; i < _data[blockIndex].Count; i++) 
+                for (int i = 0; i < _data[blockIndex].Count; i++)
                 {
                     var dataItem = _data[blockIndex][i];
 
@@ -181,7 +181,7 @@ namespace Lab2.Database
                     }
                 }
             }
-        
+
             if (isOverflow) // if its in overflow
             {
                 if (_overflow.Count == 0)
@@ -207,10 +207,10 @@ namespace Lab2.Database
                     }
                 }
             }
-        
+
             return false;
-        }   
-        public T Select(int key) 
+        }
+        public T Select(int key)
         {
             this.Comparisons = 0;
 
@@ -231,7 +231,7 @@ namespace Lab2.Database
             {
                 isOverflow = true;
             }
-            
+
             if (!isOverflow) // if its not in overflow
             {
                 result = UniformBinarySearch(_data[blockIndex], key);
@@ -290,7 +290,7 @@ namespace Lab2.Database
 
             return false;
         }
-        public bool Delete(int key) 
+        public bool Delete(int key)
         {
             var item = this.Select(key);
 
@@ -339,33 +339,33 @@ namespace Lab2.Database
             int first = 0;
             int last = n - 1;
             T result = default(T);
-            
+
             while (first < last)
             {
                 this.Comparisons++;
 
                 average = first + (last - first) / 2;
-                
+
                 if (key == data[first].Key)
                 {
                     result = data[first];
                 }
-                else if (key == data[average].Key) 
+                else if (key == data[average].Key)
                 {
                     result = data[average];
                     break;
                 }
-                else if (key <= data[average].Key) 
+                else if (key <= data[average].Key)
                 {
                     last = average;
                 }
-                else 
+                else
                 {
                     if (first != average)
                     {
                         first = average;
                     }
-                    else 
+                    else
                     {
                         first++;
                     }
@@ -376,7 +376,7 @@ namespace Lab2.Database
         }
 
 
-        public bool SaveIndex() 
+        public bool SaveIndex()
         {
             var path = _connectionString + $"/index.json";
 
@@ -388,10 +388,10 @@ namespace Lab2.Database
 
             return true;
         }
-        public bool SaveData(int blockIndex) 
+        public bool SaveData(int blockIndex)
         {
             var dataBlock = _data[blockIndex];
-            
+
             var tmp = "";
             if (blockIndex < 10)
             {
@@ -412,7 +412,7 @@ namespace Lab2.Database
 
             return true;
         }
-        public bool SaveOverflow() 
+        public bool SaveOverflow()
         {
             var path = _connectionString + $"/overflow.json";
 

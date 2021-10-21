@@ -48,14 +48,14 @@ namespace Lab2
         {
             List<int> randomKeys = new List<int>();
 
-            for (int i = 0; i < 6500; i++)
+            for (int i = 0; i <= 10000; i++)
             {
                 randomKeys.Add(i);
             }
 
             Shuffle(randomKeys);
 
-            for (int i = 0; i < 6500; i++)
+            for (int i = 0; i <= 10000; i++)
             {
                 var player = new Player
                 {
