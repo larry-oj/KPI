@@ -212,6 +212,8 @@ namespace Lab2.Database
         }
         public T Select(int key)
         {
+            if (key < 0) return default(T);
+
             this.Comparisons = 0;
 
             int blockIndex = -1;
@@ -333,41 +335,40 @@ namespace Lab2.Database
         {
             int n = data.Count;
 
-            // if (key > data[n - 1].Key) return null;
-
-            int average;
-            int first = 0;
-            int last = n - 1;
+            int delta;
+            int index = 0;
+            int boundry = n - 1;
             T result = default(T);
 
-            while (first < last)
+            while (index < boundry)
             {
                 this.Comparisons++;
 
-                average = first + (last - first) / 2;
+                delta = index + (boundry - index) / 2;
 
-                if (key == data[first].Key)
+                if (key == data[index].Key)
                 {
-                    result = data[first];
-                }
-                else if (key == data[average].Key)
-                {
-                    result = data[average];
+                    result = data[index];
                     break;
                 }
-                else if (key <= data[average].Key)
+                else if (key == data[delta].Key)
                 {
-                    last = average;
+                    result = data[delta];
+                    break;
+                }
+                else if (key <= data[delta].Key)
+                {
+                    boundry = delta;
                 }
                 else
                 {
-                    if (first != average)
+                    if (index != delta)
                     {
-                        first = average;
+                        index = delta;
                     }
                     else
                     {
-                        first++;
+                        index++;
                     }
                 }
             }

@@ -12,16 +12,13 @@ namespace Lab2
 
         static void Main(string[] args)
         {
-            var path = @"D:\KPI\AnDS\Lab2_Data";
+            var path = @"";
 
             var context = new DbContext<Player>(path);
 
             Randomize(ref context);
 
             // . . .
-
-            System.Console.WriteLine(context.Select(1));
-            System.Console.WriteLine(context.Comparisons);
         }
 
         static string RandomString(int length)
