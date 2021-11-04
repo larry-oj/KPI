@@ -6,17 +6,17 @@ namespace Lab3.Genetic
 {
     public class GeneticAlgorithm
     {
-        public struct Crossovers
+        public struct Crossovers // divide chromosome into 3 parts
         {
-            public int First { get; set; }
+            public int First { get; set; } 
             public int Second { get; set; }
             public int Thrid { get; set; }
 
-            public Crossovers(int f, int s, int t)
+            public Crossovers(int f, int s, int t) // 1st + 2nd + 3rd = 100% 
             {
-                this.First = f;
-                this.Second = s;
-                this.Thrid = t;
+                this.First = f;  // 30%
+                this.Second = s; // 40%
+                this.Thrid = t;  // 30%
             }
         }
 
@@ -40,14 +40,13 @@ namespace Lab3.Genetic
             this._currentGeneration = new Generation(_knapsack.Items, mutationChance);
         }
 
-
         public void Progress(int generationsCount)
         {
             var counter = 0;
             for (int iterator = 0; iterator < generationsCount; iterator++)
             {
                 var best = BestFintess();
-                var bestFitness = _knapsack.Fitness(best.Chromosome);
+                var bestFitness = _knapsack.Fitness(best.Chromosome); 
                 var bestWeight = _knapsack.ItemsWeight(best.Chromosome);
 
                 counter++;
@@ -63,15 +62,15 @@ namespace Lab3.Genetic
                     System.Console.WriteLine((iterator + 1) + " - " + bestFitness + " - " + bestWeight);
                 }
 
-                var currentBestFitness = _knapsack.Fitness(_best.Chromosome);
+                var currentBestFitness = _knapsack.Fitness(_best.Chromosome); // fitness of the best of all time 
 
                 if (currentBestFitness < bestFitness)
                 {
-                    for (int i = 0; i < _best.Chromosome.Count; i++)
+                    for (int i = 0; i < _best.Chromosome.Count; i++) // if we found the Individual who is even better
                     {
-                        this._best.Chromosome[i] = best.Chromosome[i];
+                        this._best.Chromosome[i] = best.Chromosome[i]; // make him the best of all time
                     }
-                    this._bestIteration = iterator;
+                    this._bestIteration = iterator; // iteration where we've found the best of all time 
                 }
 
                 // PrintGeneration();
@@ -89,11 +88,10 @@ namespace Lab3.Genetic
                     System.Console.Write(gene + " ");
                 }
                 System.Console.WriteLine("- " + _knapsack.ItemsWeight(item.Chromosome) + " - " + _knapsack.Fitness(item.Chromosome));
-                // System.Console.WriteLine(_knapsack.Fitness(item.Chromosome));
             }
         }
 
-        public Individual BestFintess()
+        public Individual BestFintess() // search for the best individual in current generation
         {
             Individual best = _currentGeneration.Population[0];
 

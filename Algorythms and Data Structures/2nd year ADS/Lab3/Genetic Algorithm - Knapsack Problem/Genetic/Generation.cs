@@ -17,7 +17,6 @@ namespace Lab3.Genetic
         {
             this._mutationChance = mutationChance;
             this._population = InitPopulation(items.Count, _mutationChance);
-            // this._population = InitPopulation(1000, _mutationChance);
         }
         public Generation(List<Individual> population, double mutationChance) 
         {
@@ -25,8 +24,7 @@ namespace Lab3.Genetic
             this._population = population;
         }
 
-
-        private List<Individual> InitPopulation(int populationSize, double mutationChance)
+        private List<Individual> InitPopulation(int populationSize, double mutationChance) // starting population  
         {
             var random = new Random();
             var individuals = new List<Individual>();
@@ -94,9 +92,9 @@ namespace Lab3.Genetic
             return newGeneration;
         }
 
-        private void LocalImprovement(Individual ind, Knapsack knapsack)
+        private void LocalImprovement(Individual ind, Knapsack knapsack) // insert item with low weight into chromosome
         {
-            if (knapsack.Fitness(ind.Chromosome) == 0) return;
+            if (knapsack.Fitness(ind.Chromosome) == 0) return; 
 
             var indPointer = (Individual)ind.Clone();
 

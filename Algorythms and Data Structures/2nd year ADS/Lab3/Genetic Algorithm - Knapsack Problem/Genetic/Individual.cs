@@ -10,17 +10,17 @@ namespace Lab3.Genetic
         public List<int> Chromosome { get; set; }
 
         private Individual() { }
-        public Individual(int geneSize, double mutationChance)
+        public Individual(int chromosomeSize, double mutationChance)
         {
             this.MutationChance = mutationChance;
-            this.Chromosome = SetGenes(geneSize);
+            this.Chromosome = SetGenes(chromosomeSize);
         }
 
-        private List<int> SetGenes(int geneSize)
+        private List<int> SetGenes(int chromosomeSize) // fill with zeroes
         {
             var gene = new List<int>();
 
-            for (int i = 0; i < geneSize; i++)
+            for (int i = 0; i < chromosomeSize; i++)
             {
                 gene.Add(0);
             }
@@ -34,14 +34,15 @@ namespace Lab3.Genetic
 
             for (int i = 0; i < Chromosome.Count; i++)
             {
-                var chooser = random.NextDouble();
+                var chooser = random.NextDouble(); // 0.0 -> 0.1 - 10% | 0.10...1 -> 0.(9) - no mutation 
 
-                if (chooser < MutationChance)
+                if (chooser <= MutationChance) 
                 {
                     var geneOne = i;
+
                     var geneTwo = 0;
 
-                    do
+                    do // choose another random gene
                     {
                         geneTwo = random.Next(0, Chromosome.Count);
                     }

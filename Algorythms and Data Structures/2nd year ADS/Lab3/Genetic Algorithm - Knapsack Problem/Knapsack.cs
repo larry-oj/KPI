@@ -41,7 +41,7 @@ namespace Lab3
             }
         }
     
-        public int ItemsWeight(List<int> itemCombination)
+        public int ItemsWeight(List<int> itemCombination)  
         {
             var weight = 0;
             for (int i = 0; i < _items.Count; i++)
@@ -69,7 +69,7 @@ namespace Lab3
             return value;
         }
     
-        public int Fitness(List<int> itemCombination)
+        public int Fitness(List<int> itemCombination) // if weight is more than maxWeight = 0, sum of weight & value (=fitness)  
         {
             return ItemsWeight(itemCombination) > _maxWeight ? 0 : ItemsWeight(itemCombination) + ItemsValue(itemCombination);
         }
