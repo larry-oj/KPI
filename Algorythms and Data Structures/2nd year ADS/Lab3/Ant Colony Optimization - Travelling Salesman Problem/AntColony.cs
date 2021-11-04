@@ -64,23 +64,79 @@ namespace Lab3_1
         {
             var normalAntsCount = antCount - wildAntCount;
 
+            var lMin = CountLMin();
+
             var ants = new List<IAnt>();
 
             IAnt ant;
 
             for (int i = 0; i < normalAntsCount; i++)
             {
-                ant = new Ant(this);
+                ant = new Ant(this, lMin);
                 ants.Add(ant);
             }
 
             for (int i = 0; i < wildAntCount; i++)
             {
-                ant = new WildAnt(this);
+                ant = new WildAnt(this, lMin);
                 ants.Add(ant);
             }
 
             return ants;
+        }
+        private int CountLMin()
+        {
+            var startPoint = 0;
+
+            var openList = new List<int>(); // contains indexes of cities
+            var closedList = new List<int>(); // basically contains path
+
+            // fill openList with cities
+            for (int i = 0; i < this.DistanceMap.GetLength(1); i++)
+            {
+                if (i == startPoint) continue;
+
+                openList.Add(i);
+            }
+
+            var totalDistance = 0;
+            var random = new Random();
+
+            var currentCity = 0;
+
+            // iterate though all cities
+            for (int i = 0; i < this.DistanceMap.GetLength(1) - 1; i++)
+            {
+                if (i == 0)
+                {
+                    currentCity = startPoint;
+                }
+
+                var shortestDistance = int.MaxValue;
+                var city = -1;
+                foreach (var openCity in openList)
+                {
+                    if (this.DistanceMap[currentCity, openCity] < shortestDistance)
+                    {
+                        shortestDistance = this.DistanceMap[currentCity, openCity];
+                        city = openCity;
+                    }
+                }
+
+                totalDistance += this.DistanceMap[currentCity, city];
+
+                closedList.Add(city);
+                openList.Remove(city);
+
+                currentCity = city;
+            }
+
+            closedList.Add(startPoint);
+
+            // and add its distance
+            totalDistance += this.DistanceMap[currentCity, startPoint];
+
+            return totalDistance;
         }
         #endregion
 
@@ -90,7 +146,7 @@ namespace Lab3_1
             var random = new Random();
 
             var counter = 0;
-            // var crutch = true;
+            var crutch = true;
             for (int iteration = 0; iteration < iterationsCount; iteration++) // main loop
             {
                 // vaporize pheromones -> (1 - ρ) * т
@@ -111,6 +167,7 @@ namespace Lab3_1
 
                     // set new best path legnths
                     var pathLength = PathLength(ant.LastPath);
+                    // System.Console.WriteLine(pathLength);
                     if (pathLength < _bestPathLength)
                     {
                         _bestPathLength = pathLength;
@@ -148,14 +205,14 @@ namespace Lab3_1
                 }
 
                 counter++;
-                // if (crutch)
-                // {
-                //     Console.WriteLine( $"{iteration + 1} - Length: {BestPathLength}");
-                // }
-                // if (counter == 9)
-                // {
-                //     crutch = false;
-                // }
+                if (crutch)
+                {
+                    Console.WriteLine( $"{iteration + 1} - Length: {BestPathLength}");
+                }
+                if (counter == 9)
+                {
+                    crutch = false;
+                }
                 if (counter == 19)
                 {
                     counter = -1;

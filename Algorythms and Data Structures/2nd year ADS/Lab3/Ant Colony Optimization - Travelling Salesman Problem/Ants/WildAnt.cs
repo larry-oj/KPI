@@ -15,12 +15,15 @@ namespace Lab3_1.Ants
 
         public double LastPheromoneValue => _lastPheromoneValue;
         public List<int> LastPath => _lastPath;
+        public int Lmin { get; init; }
         #endregion
 
-        public WildAnt(AntColony colony)
+        public WildAnt(AntColony colony, int lMin)
         {
             this._colony = colony;
             this._lastPath = new List<int>();
+
+            this.Lmin = lMin;
         }
 
         public void Work(int startPoint)
@@ -65,7 +68,7 @@ namespace Lab3_1.Ants
             totalDistance += _colony.DistanceMap[currentCity, startPoint];
 
             // calculate path pheromone
-            var deltaTau = (double)1 / (double)totalDistance;
+            var deltaTau = (double)Lmin / (double)totalDistance;
             this._lastPheromoneValue = deltaTau;
 
             this._lastPath.Clear();

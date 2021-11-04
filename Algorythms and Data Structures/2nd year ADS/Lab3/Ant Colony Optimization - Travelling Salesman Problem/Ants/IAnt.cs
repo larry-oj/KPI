@@ -7,6 +7,7 @@ namespace Lab3_1.Ants
     {
         double LastPheromoneValue { get; }
         List<int> LastPath { get; }
+        int Lmin { get; }
         
         void Work(int startPoint);
     }
