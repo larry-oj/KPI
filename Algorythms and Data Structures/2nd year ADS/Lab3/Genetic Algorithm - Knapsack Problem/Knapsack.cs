@@ -41,11 +41,6 @@ namespace Lab3
             }
         }
     
-        public bool IsFit(List<int> itemCombination)
-        {
-            return ItemsWeight(itemCombination) <= _maxWeight;
-        }
-    
         public int ItemsWeight(List<int> itemCombination)
         {
             var weight = 0;
