@@ -1,5 +1,4 @@
 ﻿using static System.Console;
-using Lab3_1.Ants;
 
 namespace Lab3_1
 {
@@ -7,8 +6,7 @@ namespace Lab3_1
     {
         static void Main(string[] args)
         {
-            var tsp = new TravellingSalesmanProblem(250);
-            WriteLine("\n");
+            var tsp = new TravellingSalesmanProblem(50);
 
             var colony = new AntColony(tsp.Distances);
 
