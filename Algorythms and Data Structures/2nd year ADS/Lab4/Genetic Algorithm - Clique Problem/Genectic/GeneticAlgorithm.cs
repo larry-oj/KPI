@@ -39,16 +39,16 @@ namespace Lab4_1.Genetic
                     // }
                     // System.Console.WriteLine();
 
-                    if (ind.Fitness >= _k && ind.CountVertices() > _k)
-                    {
-                        foreach (var gene in ind.Chromosome)
-                        {
-                            System.Console.Write(gene);
-                        }
-                        System.Console.WriteLine();
-                    }
+                    // if (ind.Fitness >= _k && ind.CountVertices() > _k)
+                    // {
+                    //     foreach (var gene in ind.Chromosome)
+                    //     {
+                    //         System.Console.Write(gene);
+                    //     }
+                    //     System.Console.WriteLine();
+                    // }
 
-                    if (ind.Fitness >= _k)
+                    if (ind.Fitness == _k && ind.CountVertices() == _k)
                     {
                         _best = (Individual)ind.Clone();
                         _bestIteration = iterator;
