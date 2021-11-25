@@ -7,20 +7,20 @@ namespace Lab4_1
     {
         static void Main(string[] args)
         {
-            var k = 4;
+            System.Console.Write("Enter the k: ");
+            var k = Convert.ToInt32(Console.ReadLine());
 
-            var clique = new Clique(8);
+            var clique = new Clique(300); // vertices count
 
+            // -- test -- 
             // clique.CreateGraph();
 
             var genetic = new GeneticAlgorithm(clique, k, 0.1);
 
-            genetic.Progress(1000);
+            genetic.Progress(1000); // population size
 
-
-            if (genetic.Best.CountVertices() == k && genetic.Best.Fitness == k)
+            if (genetic.BestIteration != -1) // successful search for a clique
             {
-                System.Console.WriteLine("Iteration - " + genetic.BestIteration);
                 System.Console.WriteLine("Fitness - " + genetic.Best.Fitness);
                 foreach (var gene in genetic.Best.Chromosome)
                 {
@@ -29,7 +29,7 @@ namespace Lab4_1
             }
             else
             {
-                System.Console.WriteLine("Not found");
+                System.Console.WriteLine("Not found.");
             }
         }
     }

@@ -19,7 +19,7 @@ namespace Lab4_1.Genetic
             this._bestIteration = -1;
             this._k = k;
             this._clique = clique;
-            this._best = new Individual(_clique.Matrix.GetLength(0), _k, mutationChance, _clique);
+            this._best = new Individual(_clique.Matrix.GetLength(0), _k, mutationChance, _clique); 
 
             this._currentGeneration = new Generation(300, _k, mutationChance, _clique);
         }
@@ -28,27 +28,11 @@ namespace Lab4_1.Genetic
         {
             for (int iterator = 0; iterator < generationsCount; iterator++)
             {
-                // System.Console.WriteLine("I: " + iterator);
                 this._currentGeneration = _currentGeneration.Evolve();
 
                 foreach (var ind in _currentGeneration.Population)
                 {
-                    // foreach (var gene in ind.Chromosome)
-                    // {
-                    //     System.Console.Write(gene);
-                    // }
-                    // System.Console.WriteLine();
-
-                    // if (ind.Fitness >= _k && ind.CountVertices() > _k)
-                    // {
-                    //     foreach (var gene in ind.Chromosome)
-                    //     {
-                    //         System.Console.Write(gene);
-                    //     }
-                    //     System.Console.WriteLine();
-                    // }
-
-                    if (ind.Fitness == _k && ind.CountVertices() == _k)
+                    if (ind.Fitness == _k && ind.CountVertices() == _k) // after each evolution check for the clique
                     {
                         _best = (Individual)ind.Clone();
                         _bestIteration = iterator;

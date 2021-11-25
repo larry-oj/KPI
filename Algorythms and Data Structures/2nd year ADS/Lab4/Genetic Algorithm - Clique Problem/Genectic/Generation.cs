@@ -11,13 +11,13 @@ namespace Lab4_1.Genetic
 
         public List<Individual> Population => _population;
 
-        public Generation(int populationSize, int k, double mutationChance, Clique clique)
+        public Generation(int populationSize, int k, double mutationChance, Clique clique) // initial generation
         {
             this._mutationChance = mutationChance;
             this._k = k;
-            this._population = InitPopulation(clique.Matrix.GetLength(0), clique);
+            this._population = InitPopulation(clique.Matrix.GetLength(0), clique); // initial population
         }
-        private Generation(List<Individual> population, int k, double mutationChance)
+        private Generation(List<Individual> population, int k, double mutationChance) // next generation
         {
             this._mutationChance = mutationChance;
             this._k = k;
@@ -64,7 +64,7 @@ namespace Lab4_1.Genetic
 
                 var firstPoint = _population.Count / 4; // 25%
                 var secondPoint = firstPoint * 2;       // 50%
-                var thirdPoint = firstPoint * 3;        // 75%
+                var thirdPoint = firstPoint * 3;        // 75% 
                 var fourthPoint = _population.Count;    // 100%
 
                 var buffer = 0;
@@ -94,16 +94,16 @@ namespace Lab4_1.Genetic
                 individual.MutationTwo();
             }
 
-            for (int i = 0; i < newPopulation.Count; i++)
+            for (int i = 0; i < newPopulation.Count; i++) 
             {
                 Individual ind = newPopulation[i];
-                if (ind.Fitness >= _k && ind.CountVertices() > _k)
+                if (ind.Fitness >= _k && ind.CountVertices() > _k) // find individuals/subgraphs that potentially have the clique  
                 {
                     LocalestImprovement(ref ind);
                 }
             }
 
-            var newGeneration = new Generation(newPopulation, _k, _mutationChance);
+            var newGeneration = new Generation(newPopulation, _k, _mutationChance); 
 
             return newGeneration;
         }
@@ -137,7 +137,7 @@ namespace Lab4_1.Genetic
             }
         }
     
-        private void LocalImprovement(ref Individual ind)
+        private void LocalImprovement(ref Individual ind) // weak improvement - changed
         {
             if (ind.CountVertices() == _k) return;
 
@@ -154,7 +154,7 @@ namespace Lab4_1.Genetic
     
         private void LocalestImprovement(ref Individual ind)
         {
-            var verticesIndexes = new List<int>();
+            var verticesIndexes = new List<int>(); // indexes of '1's
             for (int i = 0; i < ind.Chromosome.Count; i++)
             {
                 if (ind.Chromosome[i] == 1)
@@ -163,24 +163,23 @@ namespace Lab4_1.Genetic
                 }
             }
 
-
-            for (int i = 0; i < verticesIndexes.Count; i++)
+            for (int i = 0; i < verticesIndexes.Count; i++) 
             {
-                ind.Chromosome[verticesIndexes[i]] = 0;
+                ind.Chromosome[verticesIndexes[i]] = 0; // try to remove one vertice
                 if (ind.Fitness > _k)
                 {
-                    continue;
+                    continue; // <- if fitness is not influenced
                 }
                 else if (ind.Fitness == _k)
                 {
-                    if (ind.CountVertices() == _k)
+                    if (ind.CountVertices() == _k) 
                     {
-                        break;
+                        break; // if the clique was found -> referenced individual is now a clique  
                     }
                 }
                 else 
                 {
-                    ind.Chromosome[verticesIndexes[i]] = 1;
+                    ind.Chromosome[verticesIndexes[i]] = 1; // if the clique was not found -> change nothing
                 }
             }
         }

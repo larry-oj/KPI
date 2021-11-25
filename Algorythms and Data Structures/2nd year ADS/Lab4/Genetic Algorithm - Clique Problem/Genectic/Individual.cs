@@ -34,7 +34,7 @@ namespace Lab4_1.Genetic
                 gene.Add(0);
             }
 
-            for (int j = 0; j < _k; j++)
+            for (int j = 0; j < _k; j++) // local improvement -> each chromosome in initial population has k ones.
             {
                 var r = 0;
 
@@ -46,18 +46,17 @@ namespace Lab4_1.Genetic
 
                 gene[r] = 1;
             }
-
+           
             return gene;
         }
 
-        public int CountVertices()
+        public int CountVertices() // counts '1' in chromosome 
         {
             var count = 0;
-            foreach (var item in this.Chromosome)
+            foreach (var item in this.Chromosome) 
             {
                 count += item;
             }
-
             return count;
         }
 
@@ -89,7 +88,7 @@ namespace Lab4_1.Genetic
         }
 
         public void MutationTwo(bool? guarantee = null) // true = +1 // false = +0
-        {
+        { // true -> 0 to 1, false -> 1 to 0
             var random = new Random();
 
             if (guarantee == null)
@@ -147,10 +146,10 @@ namespace Lab4_1.Genetic
 
         private int CalculateFitness()
         {
-            var indexes = new List<int>();
+            var indexes = new List<int>(); // indexes of '1's
             var count = CountVertices();
 
-            for (int i = 0; i < Chromosome.Count; i++)
+            for (int i = 0; i < Chromosome.Count; i++) // save indexes of '1's in list
             {
                 if (Chromosome[i] == 1)
                 {
@@ -160,45 +159,26 @@ namespace Lab4_1.Genetic
 
             var fitness = 0;
 
-            for (int i = 0; i < indexes.Count; i++)
+            for (int i = 0; i < indexes.Count; i++) 
             {
                 var counter = 0;
 
                 for (int j = 0; j < indexes.Count; j++)
                 {
-                    if (j == i) continue;
-                    counter += _clique.Matrix[indexes[i],indexes[j]];
+                    if (j == i) continue; // connection to itself
+                    counter += _clique.Matrix[indexes[i],indexes[j]]; // count neighbours of the vertice
                 }
 
-                if (counter >= _k - 1)
+                if (counter >= _k - 1) // if the vertice has >= k neighbours -> fitness++
                 {
                     fitness++;
                 }
             }
 
-            // for (int i = 0; i < indexes.Count; i++)
-            // {
-            //     var counter = 0;
-            //     for (int j = 0; j < indexes.Count; j++)
-            //     {
-            //         if (i == j) continue;
-
-            //         if (_clique.Matrix[i,j] == 1)
-            //         {
-            //             counter++;
-            //         }
-            //     }
-
-            //     if (counter == indexes.Count - 1)
-            //     {
-            //         fitness++;
-            //     }
-            // }
-
             return fitness;
         }
 
-        public object Clone()
+        public object Clone() // copies the Individual to avoid pointers
         {
             return this.MemberwiseClone();
         }
