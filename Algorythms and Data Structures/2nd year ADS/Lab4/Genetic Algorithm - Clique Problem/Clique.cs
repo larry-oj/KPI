@@ -79,7 +79,7 @@ namespace Lab4_1
                         graph[i, ones[rnd]] = 0;
                         ones.RemoveAt(rnd);
                     }
-                    while (CountOnes(graph, i) > 30); // until the amount of '0' is >30
+                    while (CountOnes(graph, i) < 30); // until the amount of '0' is >30
                 }
 
             }
