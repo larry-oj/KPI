@@ -7,10 +7,12 @@ namespace Lab4_1
     {
         static void Main(string[] args)
         {
-            System.Console.Write("Enter the k: ");
-            var k = Convert.ToInt32(Console.ReadLine());
+            
 
             var clique = new Clique(300); // vertices count
+
+            System.Console.Write("Enter the k: ");
+            var k = Convert.ToInt32(Console.ReadLine());
 
             // -- test -- 
             // clique.CreateGraph();
