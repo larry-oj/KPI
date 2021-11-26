@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 namespace Genetic_Algorithm___Graph_Coloring_Problem
@@ -14,12 +13,14 @@ namespace Genetic_Algorithm___Graph_Coloring_Problem
         {
             this._matrix = matrix;
             this._chromosomes = InitPopulation(size);
+            this._chromosomes.Sort((c1, c2) => c1.Fitness.CompareTo(c2.Fitness));
         }
 
         public Population(List<Chromosome> pupulation, Matrix matrix)
         {
             this._matrix = matrix;
             this._chromosomes = pupulation;
+            this._chromosomes.Sort((c1, c2) => c1.Fitness.CompareTo(c2.Fitness));
         }
 
         private List<Chromosome> InitPopulation(int size)

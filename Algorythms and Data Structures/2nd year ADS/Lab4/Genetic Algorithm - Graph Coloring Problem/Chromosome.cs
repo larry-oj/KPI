@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Runtime.Serialization.Formatters;
 using System;
 using System.Collections.Generic;
 namespace Genetic_Algorithm___Graph_Coloring_Problem

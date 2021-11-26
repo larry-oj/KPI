@@ -1,5 +1,4 @@
-﻿using System;
-using static System.Console;
+﻿using static System.Console;
 
 namespace Genetic_Algorithm___Graph_Coloring_Problem
 {
