@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Research and test AI on the Fox and Hounds game">
+        <meta name="author" content="Jelmerro">
+        <link href="css/general.css" type="text/css" rel="stylesheet" />
+        <link href="css/board.css" type="text/css" rel="stylesheet" />
+        <link href="css/notifications.css" type="text/css" rel="stylesheet" />
+        <link href="css/forms.css" type="text/css" rel="stylesheet" />
+        <link href="css/scaling.css" type="text/css" rel="stylesheet" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/svg" href="img/fox.svg">
+        <script src="js/board.js"></script>
+        <script src="js/ai.js"></script>
+        <script src="js/main.js"></script>
+        <title>Fox and Hounds AI project</title>
+    </head>
+    <body>
+        <div id="notifications"></div>
+        <nav>
+            <img src="img/fox.svg" alt="fox">
+            Fox and Hounds AI project
+        </nav>
+        <main>
+            <div id="board" ondragstart="return false;">
+                <noscript>Enable javascript or check the console</noscript>
+            </div>
+            <form autocomplete="off" onSubmit="return false;">
+                <div>
+                    <h4>Wins</h4>
+                    <div class="form-row">
+                        <span class="hound-name">Hounds</span>: <span id="win-hound">0</span>
+                        <span class="fox-name">Fox</span>: <span id="win-fox">0</span>
+                        <button type="button" id="controls-reset-scores">Reset</button>
+                        <span id="win-ratio"></span>
+                    </div>
+                </div>
+            </form>
+        </main>
+        <footer>
+            <hr />
+            <a href="https://github.com/Jelmerro/fox-and-hounds-ai" title="Github repository" target="_blank">Fox and Hounds AI project</a>
+            by
+            <a href="https://github.com/Jelmerro" title="Jelmer van Arnhem" target="_blank">Jelmerro</a>
+            licensed as
+            <a href="LICENSE" title="MIT License">MIT</a>
+            <p>
+                Icons originally made by
+                <a href="https://www.flaticon.com/authors/pixel-perfect" title="Pixel perfect" target="_blank">Pixel perfect</a>
+                licensed as
+                <a href="img/LICENSE" title="Creative Commons BY 3.0 License">CC 3.0 BY</a>
+            </p>
+        </footer>
+    </body>
+</html>
