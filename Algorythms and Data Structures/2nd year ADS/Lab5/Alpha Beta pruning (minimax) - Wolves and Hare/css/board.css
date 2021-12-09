@@ -1,14 +1,10 @@
 #board {
     line-height: 0;
-    border: 1.3em solid #740;
-    box-shadow: 0 0 1.4em #333;
-    white-space: nowrap;
-    border-radius: 1em;
-    color: #fff;
+    border: 1.3em solid rgb(82, 47, 52);
+    color: whitesmoke;
     height: 100%;
     transition: 0.5s;
     user-select: none;
-    -moz-user-select: none;
 }
 .rotated {
     transform: rotate(180deg);
@@ -28,17 +24,15 @@
 .black-square {
     width: 4em;
     height: 4em;
-    background-color: #5a3300;
+    background-color: #181818;
     display: inline-block;
     margin: 0;
 }
 .white-square {
     width: 4em;
     height: 4em;
-    background-color: #f5f5dc;
+    background-color: #a15d5d;
     display: inline-block;
     margin: 0;
 }
-.focussed {
-    filter: drop-shadow(0.2em 0.2em grey) drop-shadow(-0.2em -0.2em grey) drop-shadow(0.2em -0.2em grey) drop-shadow(-0.2em 0.2em gray);
-}
+

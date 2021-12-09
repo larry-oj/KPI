@@ -4,7 +4,7 @@
 let board
 
 class Board {
-    constructor(animals, firstTurn="fox") {
+    constructor(animals, firstTurn="hare") {
         this.animals = animals
         this.currentTurn = firstTurn
         this.focussedAnimal = null
@@ -18,8 +18,8 @@ class Board {
         if (animal.x === x && animal.y === y) {
             return false
         }
-        // Second failure is when a hound tries to move back up to a higher row
-        if (animal.name === "hound" && y <= animal.y) {
+        // Second failure is when a wolf tries to move back up to a higher row
+        if (animal.name === "wolf" && y <= animal.y) {
             return false
         }
         // Third faulure is if the move is not a diagonal tile on the x axis
@@ -68,31 +68,32 @@ class Board {
 
     checkVictory(register=true) {
         // After each move this function is called to check if the game is over:
-        // First it checks if the fox is closed in, which means the hounds win.
-        // Secondly it checks if the hounds are stuck, meaning the fox wins.
-        // Lastly it checks if the fox has reached the top row of the board,
-        // which results in a win for the fox.
-        // the board is reset to the startup state and a new game can begin
-        if (this.possibleMoves("fox").length === 0) {
+        // - 1) it checks if the hare is closed in, which means the wolves win;
+        // - 2) it checks if the wolves are stuck, meaning the hare wins;
+        // - 3) it checks if the hare has reached the top row of the board, which results in a win for the hare;
+        // The board is reset to the startup state and a new game can begin.
+        if (this.possibleMoves("hare").length === 0) {
             if (register) {
-                notify("info", `${nationalName("hound", true)} win!`)
-                this.addVictory("hound")
+                notify("info", `Wolves win!`)
+                this.addVictory("wolf")
             }
-            return "hound"
-        } else if (this.possibleMoves("hound").length === 0) {
+            return "wolf"
+        } 
+        else if (this.possibleMoves("wolf").length === 0) {
             if (register) {
-                notify("info", `${nationalName("fox", true)} wins!`)
-                this.addVictory("fox")
+                notify("info", `Hare wins!`)
+                this.addVictory("hare")
             }
-            return "fox"
-        } else {
+            return "hare"
+        } 
+        else {
             this.animals.forEach(animal => {
-                if (animal.name === "fox" && animal.y === 0) {
+                if (animal.name === "hare" && animal.y === 0) {
                     if (register) {
-                        notify("info", `${nationalName("fox", true)} wins!`)
-                        this.addVictory("fox")
+                        notify("info", `Hare wins!`)
+                        this.addVictory("hare")
                     }
-                    return "fox"
+                    return "hare"
                 }
             })
         }
@@ -126,7 +127,7 @@ class Animal {
         if (place.isValidMove(this, x, y)) {
             this.x = x
             this.y = y
-            place.currentTurn = place.currentTurn === "fox" ? "hound" : "fox"
+            place.currentTurn = place.currentTurn === "hare" ? "wolf" : "hare"
             place.focussedAnimal = null
             if (place === board) {
                 updateBoard()
@@ -138,15 +139,15 @@ class Animal {
     }
 }
 
-class Hound extends Animal {
-    // There are always 4 hounds (or Sheep) on the board
+class Wolf extends Animal {
+    // There are always 4 wolves (or Sheep) on the board
     constructor(x, y) {
         super(x, y)
-        this.name = "hound"
+        this.name = "wolf"
     }
 
     possibleMoves(place=board) {
-        // Returns all possible moves for this hound
+        // Returns all possible moves for this wolf
         const allMoves = [
             {
                 x: this.x + 1,
@@ -166,15 +167,15 @@ class Hound extends Animal {
         return validMoves
     }
 }
-class Fox extends Animal {
-    // There will always be one fox (or Wolf) on the board
+class Hare extends Animal {
+    // There will always be one hare (or Wolf) on the board
     constructor(x, y) {
         super(x, y)
-        this.name = "fox"
+        this.name = "hare"
     }
 
     possibleMoves(place=board) {
-        // Returns all possible moves for the fox
+        // Returns all possible moves for the hare
         const allMoves = [
             {
                 x: this.x + 1,
@@ -206,11 +207,11 @@ class Fox extends Animal {
 function generateNewBoard() {
     // This function resets the board to the default state
     board = new Board([
-        new Fox(0, 7),
-        new Hound(1, 0),
-        new Hound(3, 0),
-        new Hound(5, 0),
-        new Hound(7, 0)
+        new Hare(0, 7),
+        new Wolf(1, 0),
+        new Wolf(3, 0),
+        new Wolf(5, 0),
+        new Wolf(7, 0)
     ])
     updateBoard()
 }
@@ -248,10 +249,12 @@ function updateBoard() {
         animalImage.onclick = () => {
             if (animal === board.focussedAnimal) {
                 board.focussedAnimal = null
-            } else if (animal.name !== board.currentTurn) {
+            } 
+            else if (animal.name !== board.currentTurn) {
                 const prettyName = nationalName(board.currentTurn, true)
                 notify("warn", `${prettyName} should make the next move`)
-            } else {
+            } 
+            else {
                 board.focussedAnimal = animal
             }
             updateBoard()

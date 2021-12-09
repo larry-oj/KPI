@@ -2,7 +2,7 @@
 /* global board generateNewBoard updateBoard mainAILoop nextAIMove */
 
 // Stores if the international or "dutch" tiles should be used
-// Fox and Hounds is the default, but Wolf and Sheep is also possible
+// Hare and Hounds is the default, but Wolf and Sheep is also possible
 // Names on the screen and in the messages will be updated as well
 let useInternationalTiles = true
 
@@ -17,8 +17,8 @@ function startup() {
 
 function setupListeners() {
     document.getElementById("controls-reset-scores").onclick = () => {
-        document.getElementById("win-fox").innerText = "0"
-        document.getElementById("win-hound").innerText = "0"
+        document.getElementById("win-hare").innerText = "0"
+        document.getElementById("win-wolf").innerText = "0"
         generateNewBoard()
     }
 }
@@ -39,15 +39,20 @@ function title(string) {
 }
 
 function nationalName(name, pretty=false) {
+    
     if (pretty) {
-        if (useInternationalTiles) {
+        if (useInternationalTiles) 
+        {
             let prettyName = title(name)
-            if (prettyName === "Hound") {
-                prettyName += "s"
+
+            if (prettyName == "wolf") 
+            {
+                prettyName = "s"
             }
             return prettyName
         }
-    } else if (useInternationalTiles) {
+    } 
+    else if (useInternationalTiles) {
         return name
     }
 }

@@ -1,5 +1,5 @@
 "use strict"
-/* global board Board Hound Fox notify */
+/* global board Board Wolf Hare notify */
 
 /* eslint-disable-next-line no-unused-vars */
 function mainAILoop() {
@@ -18,8 +18,8 @@ function nextAIMove(manual=true) {
     // it should only make the next move if the AI is enabled.
     // If this function is called manually, it should move regardless.
 
-    if (board.currentTurn === "hound" && (manual || true)) {
-        houndAI.makeMove()
+    if (board.currentTurn === "wolf" && (manual || true)) {
+        wolfAI.makeMove()
     }
 }
 
@@ -53,10 +53,10 @@ class AI {
     cloneBoard(boardState) {
         const animals = []
         boardState.animals.forEach(animal => {
-            if (animal.name === "fox") {
-                animals.push(new Fox(animal.x, animal.y))
-            } else if (animal.name === "hound") {
-                animals.push(new Hound(animal.x, animal.y))
+            if (animal.name === "hare") {
+                animals.push(new Hare(animal.x, animal.y))
+            } else if (animal.name === "wolf") {
+                animals.push(new Wolf(animal.x, animal.y))
             }
         })
         return new Board(animals, boardState.currentTurn)
@@ -113,9 +113,9 @@ class AI {
             var nbeta = 0
             var lowest = this.evaluateScore(currentBoard)
             
-            if (currentBoard.currentTurn === "hound") { 
+            if (currentBoard.currentTurn === "wolf") { 
                 nalpha = lowest
-            } else if (currentBoard.currentTurn === "fox") {
+            } else if (currentBoard.currentTurn === "hare") {
                 nbeta = lowest
             }
             
@@ -162,59 +162,59 @@ class AI {
     }
 }
 
-class FoxAI extends AI {
+class HareAI extends AI {
     constructor() {
         super()
-        this.name = "fox"
+        this.name = "hare"
     }
 }
 
-class HoundAI extends AI {
+class WolfAI extends AI {
     constructor() {
         super()
-        this.name = "hound"
+        this.name = "wolf"
     }
 
     evaluateScore(boardState) {
         let score = 0
-        let fox = null
-        const hounds = []
+        let hare = null
+        const wolves = []
         boardState.animals.forEach(animal => {
-            if (animal.name === "fox") {
-                fox = animal
+            if (animal.name === "hare") {
+                hare = animal
             } else {
-                hounds.push(animal)
+                wolves.push(animal)
             }
         })
-        score += fox.y * 3
-        // Let the hounds keep roughly the same y axis
-        let highestHound = -10
-        let lowestHound = 20
-        hounds.forEach(hound => {
-            if (hound.y > highestHound) {
-                highestHound = hound.y
-            } else if (hound.y < lowestHound) {
-                lowestHound = hound.y
+        score += hare.y * 3
+        // Let the wolves keep roughly the same y axis
+        let highestWolf = -10
+        let lowestWolf = 20
+        wolves.forEach(wolf => {
+            if (wolf.y > highestWolf) {
+                highestWolf = wolf.y
+            } else if (wolf.y < lowestWolf) {
+                lowestWolf = wolf.y
             }
         })
-        score -= (highestHound - lowestHound) * 2
-        // Make sure the fox does not get above the hounds
+        score -= (highestWolf - lowestWolf) * 2
+        // Make sure the hare does not get above the wolves
         // As this means the game is lost
-        if (fox.y <= lowestHound) {
+        if (hare.y <= lowestWolf) {
             score -= 50
         }
-        // Lower the score when the hounds are on average not above the fox
+        // Lower the score when the wolves are on average not above the hare
         let totalWidth = 0
-        hounds.forEach(hound => {
-            totalWidth += hound.x
+        wolves.forEach(wolf => {
+            totalWidth += wolf.x
         })
-        const averageXPosition = totalWidth / hounds.length
-        score -= Math.abs(averageXPosition - fox.x)
-        // Make sure there are no gaps between the hounds
+        const averageXPosition = totalWidth / wolves.length
+        score -= Math.abs(averageXPosition - hare.x)
+        // Make sure there are no gaps between the wolves
         // -1 and 8 are the "walls", where gaps are also discouraged
         const xPositions = []
-        hounds.forEach(hound => {
-            xPositions.push(hound.x)
+        wolves.forEach(wolf => {
+            xPositions.push(wolf.x)
         })
         xPositions.push(-1)
         xPositions.push(8)
@@ -237,5 +237,5 @@ class HoundAI extends AI {
     }
 }
 
-const foxAI = new FoxAI()
-const houndAI = new HoundAI()
+const hareAI = new HareAI()
+const wolfAI = new WolfAI()
