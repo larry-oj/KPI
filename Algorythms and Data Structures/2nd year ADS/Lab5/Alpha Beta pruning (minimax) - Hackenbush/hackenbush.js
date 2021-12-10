@@ -10,11 +10,10 @@ let padding = 20; // padding of... yeah
 
 let innerWidth = 8; // line width
 
+// colors
 const red = '#FF4500';
 const blue = '#1E90FF';
 const black = '#000000';
-const white = '#FFFFFF';
-let colors = [];
 
 let numRed = 0; // individual scores
 let numBlue = 0; // individual scores
@@ -22,7 +21,7 @@ let numBlue = 0; // individual scores
 let turn = true; // true -> blue | false -> red
 let winner = false; // true -> game is over
 
-let difficulty = 3;
+let difficulty = 0;
 // ========== Parameters ========== //
 
 // ============= Data ============= //
