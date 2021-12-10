@@ -8,9 +8,7 @@ const canvasHeight = 500;
 
 let padding = 20; // padding of... yeah
 
-let outlineWidth = 6; // outline of lines
-let strokeWidth = 2 + outlineWidth; // outline of an outline of lines, duh
-let innerWidth = 6; // line width
+let innerWidth = 8; // line width
 
 const red = '#FF4500';
 const blue = '#1E90FF';
@@ -38,8 +36,6 @@ svg.setAttribute('height', canvasHeight + padding * 2)
 
 // create ground line
 createLine(padding, canvasHeight, canvasWidth, canvasHeight, 'base', black, false);
-
-drawBoard(1);
 
 // creates line
 function createLine(x1, y1, x2, y2, classId, color, remove = true) {
@@ -207,6 +203,27 @@ function drawBoard(num) {
             createLine(850, 225, 850, 150, '33', red);
             createLine(850, 150, 800, 100, '34', red);
             break;
+    
+        case 2:
+            createLine(500, 500, 525, 400, '0', red);
+            createLine(525, 400, 500, 300, '1', red);
+            createLine(500, 300, 525, 200, '2', red);
+            createLine(525, 200, 500, 100, '3', red);
+            createLine(500, 300, 600, 225, '4', red);
+            createLine(600, 225, 600, 150, '5', red);
+            createLine(600, 225, 650, 150, '6', red);
+            createLine(600, 225, 675, 225, '7', red);
+            createLine(525, 400, 425, 325, '8', blue);
+            createLine(425, 325, 375, 250, '9', blue);
+            createLine(375, 250, 325, 200, '10', blue);
+            createLine(375, 250, 400, 175, '11', red);
+            createLine(325, 200, 325, 150, '12', blue);
+            createLine(325, 200, 300, 150, '13', blue);
+            createLine(325, 200, 275, 175, '14', blue);
+            createLine(400, 500, 400, 375, '15', blue);
+            createLine(600, 500, 600, 375, '16', blue);
+            createLine(525, 200, 425, 125, '17', blue);
+            break;
     }
 
     countScore();
@@ -275,11 +292,11 @@ function updateCounter() {
 
 // main loop
 function gameLoop() {
+    if (winner) return; // if winner is defined, stop the loop
+    
     // update scores
     countScore();
     updateCounter();
-    
-    if (winner) return; // if winner is defined, stop the loop
 
     setTimeout(gameLoop, 100); // run loop every 0.1s bot
 
@@ -301,7 +318,7 @@ function aiAdvance() {
     // use current canvas state as initial
     var initialState = {
         state: [...allLines],
-        deletedLine: allLines[Math.floor(Math.random() * allLines.length)], // line is random to avoid AI resigning
+        deletedLine: allLines[allLines.length - 1],
         eval: evaluation(allLines)
     };
 
@@ -333,6 +350,7 @@ function aiAdvance() {
 
         countScore();
         updateCounter();
+        counter.innerHTML = "";
         return;
     }
 
@@ -438,5 +456,7 @@ function getPossibleDeletions(lines = allLines, color) {
     return possibleDeletions;
 }
 
+
 // run the game
+drawBoard(1);
 gameLoop();
