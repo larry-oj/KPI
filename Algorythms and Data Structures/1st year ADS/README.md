@@ -1,2 +1,2 @@
-Lecturer: Bohdanova Natalia
-Variant: 16
+# Lecturer: Bohdanova Natalia
+## Variant: 16
