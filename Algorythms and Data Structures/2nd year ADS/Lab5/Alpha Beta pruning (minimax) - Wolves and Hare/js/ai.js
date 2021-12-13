@@ -25,11 +25,24 @@ class AI {
     }
 
     makeMove() { // calls alpha-beta pruning
-        var depth = 6
+        var depth = 0
+        if(document.getElementById("easy").checked == true) 
+        {
+            depth = 1
+        }
+        else if (document.getElementById("medium").checked == true)
+        {
+            depth = 3
+        }
+        else {
+            depth = 6
+        }
+
         var baseAlpha = -1000
         var baseBeta = 1000
         var isAi = true
 
+        // initial call
         this.evaluateMinimax(board, depth, baseAlpha, baseBeta, isAi)
     }
 
