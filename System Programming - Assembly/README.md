@@ -1,2 +1,2 @@
-Lecturer: Oleg Lisovychenko
-Variant: 16
+# Lecturer: Oleg Lisovychenko
+# Variant: 16
