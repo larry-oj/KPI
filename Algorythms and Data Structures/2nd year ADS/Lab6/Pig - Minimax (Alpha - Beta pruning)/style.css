@@ -1,0 +1,204 @@
+@font-face {
+	font-family: 'nunitosans'; /*a name to be used later*/
+	src: url('NunitoSans-Regular.ttf'); /*URL to font*/
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: #00d3f8;
+	font-size: 25px;
+	font-family: 'nunitosans';
+}
+
+.game {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+	border-radius: 50px;
+	background: #00d3f8;
+	box-shadow:  41px 41px 82px #00b3d3,
+				-41px -41px 82px #00f3ff;
+	width: 1200px;
+	height: 600px;
+}
+
+.info-table {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	margin-right: 5%;
+	width: 45%;
+	height: 80%;
+}
+
+.info-inner {
+	height: 100%;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: flex-start;
+	flex-direction: column;
+}
+
+span.info {
+	float: right;
+}
+
+p.info {
+	width: 100%;
+}
+
+.controls {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+button {
+	border-radius: 22px;
+	border: none;
+	background: #00d3f8;
+	box-shadow:  8px 8px 16px #00b3d3,
+				-8px -8px 16px #00f3ff;
+	outline: none;
+	width: 8rem;
+	height: 4rem;
+	font-size: inherit;
+}
+
+button:active {
+	border: none;
+	box-shadow: none;
+	outline: none;
+}
+
+
+.dice-area {
+	border-radius: 50px;
+	background: #00d3f8;
+	box-shadow: inset 16px 16px 32px #00b3d3,
+				inset -16px -16px 32px #00f3ff;
+	width: 40%;
+	height: 80%;
+
+	display: flex; 
+	justify-content: center;
+	align-items: center;
+}
+
+
+.dice {
+	position: relative;
+	width: 150px;
+	height: 150px;
+	transform-style: preserve-3d;
+	transition: transform 0.8s; 
+}
+
+.dot {
+	position: absolute;
+	width: 30px;
+	height: 30px;
+	margin: -15px 7px 7px -15px;
+	border-radius: 35px;
+	background-color: #00d3f8;
+	box-shadow: inset 2px 2px #00b3d3;
+}
+
+.side {
+	position: absolute;
+	background-color: #ffF;
+	border-radius:5px;
+	width: 150px;
+	height: 150px;
+	border: 1px solid #e5e5e5;
+	text-align: center;
+	line-height: 2em;
+}
+
+.side:nth-child(1) {
+	transform: translateZ(3.1em); 
+}
+
+.side:nth-child(6) {
+	transform: rotateY(90deg) translateZ(3.1em); 
+}
+
+.side:nth-child(3) {
+	transform: rotateY(-90deg) translateZ(3.1em); 
+}
+
+.side:nth-child(4) {
+	transform: rotateX(90deg) translateZ(3.1em); 
+}
+
+.side:nth-child(5) {
+	transform: rotateX(-90deg) translateZ(3.1em); 
+}
+
+.side:nth-child(2) {
+	transform: rotateY(-180deg) translateZ(3.1em); 
+}
+
+.show-1 {
+	transform: rotateX(720deg) rotateZ(-720deg); 
+}
+
+.show-2 {
+	transform: rotateX(-900deg) rotateZ(1080deg); 
+}
+
+.show-6 {
+	transform: rotateY(-450deg) rotateZ(-1440deg); 
+}
+
+.show-3 {
+	transform: rotateY(810deg) rotateZ(720deg); 
+}
+
+.show-4 {
+	transform: rotateX(-810deg) rotateZ(-1080deg); 
+}
+
+.show-5 {
+	transform: rotateX(450deg) rotateZ(-720deg); 
+}
+
+.two-1, .three-1, .four-1, .five-1, .six-1 {
+	top: 20%;
+	left: 20%; 
+}
+
+.four-3, .five-3, .six-4 {
+	top: 20%;
+	left: 80%; 
+}
+
+.one-1, .three-2, .five-5 {
+	top: 50%;
+	left: 50%; 
+}
+
+.four-2, .five-2, .six-3 {
+	top: 80%;
+	left: 20%; 
+}
+
+.two-2, .three-3, .four-4, .five-4, .six-6 {
+	top: 80%;
+	left: 80%; 
+}
+
+.six-2 {
+	top: 50%;
+	left: 20%; 
+}
+
+.six-5 {
+	top: 50%;
+	left: 80%; 
+}

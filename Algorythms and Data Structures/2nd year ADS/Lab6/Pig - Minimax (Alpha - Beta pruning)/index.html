@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pig</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="game">
+            <div class="info-table">
+                <div class="info-inner">
+                    <p class="info">
+                        Turn: <span id="turn" class="info"></span>
+                        <br>
+                        Player Score: <span id="player-score" class="info"></span>
+                        <br>
+                        Bot Score: <span id="bot-score" class="info"></span>
+                    </p>
+                    <p class="info">
+                        Current gamble: <span id="currnet-gamble" class="info"></span>
+                        <br>
+                        Current score: <span id="current-score" class="info"></span>
+                    </p>
+                    <div class="controls">
+                        <button type="button" id="roll-dice">Roll</button>
+                        <button type="button" id="keep-score" style="margin-left: 2rem;">Keep</button>
+                    </div>
+                    <p class="info">
+                        Info: <span id="info" class="info"></span>
+                    </p>
+                </div>
+            </div>
+            <div class="dice-area">
+                <div id='dice' class="dice">
+                    <div id="dice-one-side-one" class='side one'>
+                        <div class="dot one-1"></div>
+                    </div>
+                    <div id="dice-one-side-two" class='side two'>
+                        <div class="dot two-1"></div>
+                        <div class="dot two-2"></div>
+                    </div>
+                    <div id="dice-one-side-three" class='side three'>
+                        <div class="dot three-1"></div>
+                        <div class="dot three-2"></div>
+                        <div class="dot three-3"></div>
+                    </div>
+                    <div id="dice-one-side-four" class='side four'>
+                        <div class="dot four-1"></div>
+                        <div class="dot four-2"></div>
+                        <div class="dot four-3"></div>
+                        <div class="dot four-4"></div>
+                    </div>
+                    <div id="dice-one-side-five" class='side five'>
+                        <div class="dot five-1"></div>
+                        <div class="dot five-2"></div>
+                        <div class="dot five-3"></div>
+                        <div class="dot five-4"></div>
+                        <div class="dot five-5"></div>
+                    </div>
+                    <div id="dice-one-side-six" class='side six'>
+                        <div class="dot six-1"></div>
+                        <div class="dot six-2"></div>
+                        <div class="dot six-3"></div>
+                        <div class="dot six-4"></div>
+                        <div class="dot six-5"></div>
+                        <div class="dot six-6"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <script src="pig.js"></script>
+
+    </body>
+</html>

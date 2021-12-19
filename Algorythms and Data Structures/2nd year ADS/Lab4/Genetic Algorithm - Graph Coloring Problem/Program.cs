@@ -6,8 +6,8 @@ namespace Genetic_Algorithm___Graph_Coloring_Problem
     {
         static void Main(string[] args)
         {
-            var vertices = 12;
-            var iterationsCount = 20000;
+            var vertices = 300;
+            var iterationsCount = 1000;
             var populationSize = 40;
 
             var matrix = new Matrix(vertices);
