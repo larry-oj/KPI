@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>General</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game">
+        <div class="stats">
+            <p class="scores">
+                Player score: <span id="p-score"></span>
+                <br>
+                Bot score: <span id="b-score"></span>
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Player</th>
+                        <th>Bot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="t-general">
+                        <td>General</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-four">
+                        <td>Four</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-fh">
+                        <td>Full House</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-street">
+                        <td>Street</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-6">
+                        <td>6</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-5">
+                        <td>5</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-4">
+                        <td>4</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-3">
+                        <td>3</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-2">
+                        <td>2</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                    <tr id="t-1">
+                        <td>1</td>
+                        <td id="p"></td>
+                        <td id="b"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="game">
+            <span id="dice-1"></span>
+            <input type="checkbox" id="dice-1-cb">
+            <span id="dice-2"></span>
+            <input type="checkbox" id="dice-2-cb">
+            <span id="dice-3"></span>
+            <input type="checkbox" id="dice-3-cb">
+            <span id="dice-4"></span>
+            <input type="checkbox" id="dice-4-cb">
+            <span id="dice-5"></span>
+            <input type="checkbox" id="dice-5-cb">
+        </div>
+        <div class="controls">
+            <button id="roll-btn">Roll</button>
+            <button id="keep-btn">Keep</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
