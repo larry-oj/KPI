@@ -8,13 +8,17 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="game">
-        <div class="stats">
-            <p class="scores">
-                Player score: <span id="p-score"></span>
-                <br>
-                Bot score: <span id="b-score"></span>
-            </p>
+    <div class="stats">
+        <p class="scores">
+            Player score: <span id="p-score"></span>
+            <br>
+            Bot score: <span id="b-score"></span>
+        </p>
+    
+    </div>
+    <div class="main">
+        
+        <div class="scores-table">
             <table>
                 <thead>
                     <tr>
@@ -24,76 +28,79 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr id="t-general">
+                    <tr>
                         <td>General</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-general-p"></td>
+                        <td id="t-general-b"></td>
                     </tr>
-                    <tr id="t-four">
+                    <tr>
                         <td>Four</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-four-p"></td>
+                        <td id="t-four-b"></td>
                     </tr>
-                    <tr id="t-fh">
+                    <tr>
                         <td>Full House</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-fh-p"></td>
+                        <td id="t-fh-b"></td>
                     </tr>
-                    <tr id="t-street">
+                    <tr>
                         <td>Street</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-street-p"></td>
+                        <td id="t-street-b"></td>
                     </tr>
-                    <tr id="t-6">
+                    <tr>
                         <td>6</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-6-p"></td>
+                        <td id="t-6-b"></td>
                     </tr>
-                    <tr id="t-5">
+                    <tr>
                         <td>5</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-5-p"></td>
+                        <td id="t-5-b"></td>
                     </tr>
-                    <tr id="t-4">
+                    <tr>
                         <td>4</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-4-p"></td>
+                        <td id="t-4-b"></td>
                     </tr>
-                    <tr id="t-3">
+                    <tr>
                         <td>3</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-3-p"></td>
+                        <td id="t-3-b"></td>
                     </tr>
-                    <tr id="t-2">
+                    <tr>
                         <td>2</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-2-p"></td>
+                        <td id="t-2-b"></td>
                     </tr>
-                    <tr id="t-1">
+                    <tr>
                         <td>1</td>
-                        <td id="p"></td>
-                        <td id="b"></td>
+                        <td id="t-1-p"></td>
+                        <td id="t-1-b"></td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="game">
-            <span id="dice-1"></span>
-            <input type="checkbox" id="dice-1-cb">
-            <span id="dice-2"></span>
-            <input type="checkbox" id="dice-2-cb">
-            <span id="dice-3"></span>
-            <input type="checkbox" id="dice-3-cb">
-            <span id="dice-4"></span>
-            <input type="checkbox" id="dice-4-cb">
-            <span id="dice-5"></span>
-            <input type="checkbox" id="dice-5-cb">
-        </div>
-        <div class="controls">
-            <button id="roll-btn">Roll</button>
-            <button id="keep-btn">Keep</button>
+        <div class="box">
+            <div class="game">
+                <span id="dice-1"></span>
+                <input type="checkbox" id="dice-1-cb">
+                <span id="dice-2"></span>
+                <input type="checkbox" id="dice-2-cb">
+                <span id="dice-3"></span>
+                <input type="checkbox" id="dice-3-cb">
+                <span id="dice-4"></span>
+                <input type="checkbox" id="dice-4-cb">
+                <span id="dice-5"></span>
+                <input type="checkbox" id="dice-5-cb">
+            </div>
+            <div class="controls">
+                <button id="roll-btn">Roll</button>
+                <button id="keep-btn">Keep</button>
+            </div>
         </div>
     </div>
+    
 
     <script src="script.js"></script>
 </body>
