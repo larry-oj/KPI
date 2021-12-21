@@ -158,7 +158,7 @@ function keepScoreAction(isBot = false) {
 
 async function aiLoop() {
     while (true) {
-        await sleep(100);
+        await sleep(500);
         if (!botTurn) continue;
 
         var res = minimax(getCurrentState(), 3);
