@@ -14,12 +14,15 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// is required to await animations
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// both player AND bot
 class Player {
     constructor() {
+        // stores combinations and info about their completion
         this.cCombo = {
             "general" : false,
             "four" : false,
@@ -33,15 +36,17 @@ class Player {
             "1" : false
         };
 
+        // stores player score
         this.score = 0;
     }
 
-    get scoreValue() { return this.score; }
+    get scoreValue() { return this.score; } 
 
-    setScore(val) { this.score = val; }
+    setScore(val) { this.score = val; } // score setter
 
-    get completedCombos() { return this.cCombo; }
+    get completedCombos() { return this.cCombo; } 
 
+    // mark combo as completed
     markCombo(cName) {
         this.cCombo[cName] = true;
     }
@@ -49,11 +54,18 @@ class Player {
 
 class Dice {
     constructor(num) {
+        // container containing gif and svg
         this.dice = document.getElementById('dice-' + num)
             .getElementsByClassName('inner-dice')[0];
+
+        // checkbox linked to dice
         this.cb = document.getElementById('dice-' + num)
             .getElementsByClassName('dice-' + num + '-cb')[0];
+
+        // dice score - number that was rolled
         this.score = 1;
+
+        // dices' sequence number (5 dices total)
         this.number = num;
     }
 
@@ -61,22 +73,25 @@ class Dice {
 
     get diceScore() { return this.score; }
 
-    setCB(value = true) { this.cb.checked = value; }
+    setCB(value = true) { this.cb.checked = value; } // dice checkbox setter
 
     async rollDice() {
-        if (this.cb.checked == false) return;
-        this.animation(true);
-        await sleep(1000);
-        this.score = getRandomInt(1, 6);
-        this.animation();
+        if (this.cb.checked == false) return;   // roll only if checkbox is checked
+        this.animation(true);                   // start animation
+        await sleep(1000);                      // gives animation 1 second to play
+        this.score = getRandomInt(1, 6); 
+        this.animation();                       // stops animation (and sets respective score svg)
     }
 
+    // play / stop animation
     animation(isShuffling = false) {
+        // hide all svg and gif
         this.dice.getElementsByClassName('animation')[0].classList.add('hidden');
         for (var i = 1; i <= 6; i++) {
             this.dice.getElementsByClassName(i + '')[0].classList.add('hidden');
         }
 
+        // make either gif or svg visible
         if (isShuffling) {
             this.dice.getElementsByClassName('animation')[0].classList.add('shake');
             this.dice.getElementsByClassName('animation')[0].classList.remove('hidden');
@@ -89,23 +104,17 @@ class Dice {
 
 class State {
     constructor(dices) {
+        // create and store dices
         let d = [];
         for(var i = 1; i <= 5; i++) {
             d.push(new Dice(i));
         }
         this.dices = d;
+
         this.rollNumber = 0;
-        this.combo = {};
+        this.combo = {}; // what combo is it
         this.round = 1;
         this.over = false;
-    }
-
-    get scores() {
-        var combo = [];
-        dices.forEach(dice => {
-           combo.push(dice.score); 
-        });
-        return combo;
     }
 
     get currentRound() { return this.round; }
@@ -114,7 +123,12 @@ class State {
 
     get combination() { return this.combo; }
 
+    // helper for calcValue()
     checkStreet(counts) {
+        // monitor through all scores
+        // if all dices are unique and are
+        // in a one of the sequences:
+        // 1-2-3-4-5 || 2-3-4-5-6
         var count = {};
         counts.forEach(function(i) { count[i] = (count[i]||0) + 1;});
         if (count['1'] == 5) {
@@ -126,23 +140,32 @@ class State {
     }
 
     roll() {
+        // cant roll if the game is over...
         if (this.over) return;
+        // ..or if you have already rolled 3 times
         if (this.rollNumber >= 3) return;
 
         this.rollNumber++;
+
+        // on the first roll ALL dices are rolled
         if (this.rollNumber == 1) {
             this.dices.forEach(dice => {    
                 dice.setCB();
             });
         }
 
+        // roll dices
         this.dices.forEach(dice => {
             dice.rollDice();
         });
     }
 
     keep() {
+        // cant keep if you did not roll
         if (this.rollNumber < 1) return;
+
+        // if you rolled a combo
+        // set combo as completed and count score
         var comboName = this.combo.name;
         if (comboName != "" && comboName != undefined) {
             if (playerTurn) {
@@ -154,6 +177,7 @@ class State {
                 bot.score += this.combo.value;
             }
         }
+
         if (!playerTurn) {
             this.round += 1;
         } 
@@ -165,6 +189,13 @@ class State {
     }
 
     calcValue() {
+        // count repeatings of dice scores
+        // each item in counts[] represents
+        // the amount of a certain number
+        // in the dice combo
+        // indexes of counts[] represent
+        // the actial numbers
+        // numbers:   1  2  3  4  5  6
         let counts = [0, 0, 0, 0, 0, 0];
         for (var i = 0; i < 5; i++) {
             switch (this.dices[i].score) {
@@ -197,6 +228,8 @@ class State {
         var name = "";
         var value = 0;
 
+        // exaple: if board has *five* dices
+        // with the same number
         if (counts.includes(5)) {
             if (playerTurn) {
                 if (player.completedCombos["general"] == false) {
@@ -272,6 +305,7 @@ class State {
             }
         }
 
+        // if no combination was rolled, count numbers
         if (name == "") {
             if (playerTurn) {
                 for (var i = 6; i >= 1; i--) {
@@ -311,7 +345,8 @@ let state = new State();
 
 // update interface
 function updateStats() {
-    if (afterLot) {
+    // mark a player whoose turn it is to play
+    if (afterLot) { // only after lot has been playeed
         if (playerTurn) {
             playerBox.classList.add('active-player');
             botBox.classList.remove('active-player');
@@ -327,6 +362,7 @@ function updateStats() {
     pScoreCont.innerText = player.scoreValue;
     bScoreCont.innerText = bot.scoreValue;
 
+    // mark completed combos
     if (!playerTurn) {
         for (var [key, value] of Object.entries(player.completedCombos)) {
             if (value == true) {
@@ -344,6 +380,7 @@ function updateStats() {
         }
     }
 
+    // if the game is over mark winner
     if (state.isOver) {
         playerBox.classList.remove('active-player');
         botBox.classList.remove('active-player');
@@ -362,13 +399,16 @@ updateStats();
 async function rollAction() {
     state.roll();
 
+    // disable the buttons for the duration of the animation
     rollButton.onclick = () => {};
     keepButton.onclick = () => {};
 
+    // wait for animation to finish
     await sleep(1000);
 
     state.calcValue();
 
+    // make buttons active again
     rollButton.onclick = rollAction;
     keepButton.onclick = keepAction;
 }
@@ -376,6 +416,7 @@ function keepAction() {
     state.keep();
     updateStats();
 
+    // diable buttons if it is bot's turn & call a bot
     if (!playerTurn) {
         rollButton.onclick = () => {};
         keepButton.onclick = () => {};
@@ -387,29 +428,41 @@ function keepAction() {
     }
 }
 function lotAction() {
+    // loop through dices
     state.dices.forEach(async dice => {
+        // uncheck all dices but the middle one
         if (dice.diceNumber != 3) {
             dice.setCB(false);
         }
         else {
+            // roll middle dice
             dice.setCB(true);
             dice.rollDice();
-            await sleep(1000);
+            await sleep(1000); // wait for anim to finish
+
+            // if dice scored <=3 - player goes first
             if (dice.diceScore <= 3) {
                 playerTurn = true;
             }
+            // if dice scored >=4 - bot goes first
             else {
                 playerTurn = false;
                 rollButton.onclick = () => { };
                 keepButton.onclick = () => { };
             }
+
+            // replace lot btn with controls
             lotButton.classList.add('hidden');
             rollButton.classList.remove('hidden');
             keepButton.classList.remove('hidden');
+
             afterLot = true;
+
             updateStats();
+
+            // call bot if he moves first
             if (!playerTurn) {
-                await sleep(1000);
+                await sleep(1000); // wait 1 second so that you can see that bot won the lot
                 botCore();
             }
         }
@@ -421,13 +474,19 @@ lotButton.onclick = lotAction;
 
 
 async function botCore() {
-    console.log('bot launched');
     while (true) {
-        await rollAction();
-        await sleep(1000);
-        var decision = makeDecision();
+        await rollAction(); // roll
+        await sleep(1000); // wait for anim
+
+        var decision = makeDecision(); // make decision
+
+        // execute decision and get info if bot should keep or roll again
         var toContinue = decision();
+
+        // stop loop if bot keeps
         if (toContinue == false) break;
+
+        // keep if it was bot's 3rd roll
         if (state.rollNumber >= 3) {
             keepAction();
             break;
@@ -435,16 +494,19 @@ async function botCore() {
     }
 }
 
+// returns function which can execute keepAction() and returns wether bot should roll again
 function makeDecision() {
+    // if bot rolled combination that is not numeric (general, four, fh, street)
     if (state.combination.name != "" || state.combination != undefined) {
         if (isNaN(state.combination.name)) {
             return () => {
-                keepAction();
-                return false;
+                keepAction(); // bot will keep
+                return false; // and not roll again
             };
         }
     }
 
+    // same as the one in state.calcValue() || see row #192
     let counts = [0, 0, 0, 0, 0, 0];
     for (var i = 0; i < 5; i++) {
         switch (state.dices[i].score) {
@@ -474,8 +536,13 @@ function makeDecision() {
         }
     }
 
+    // try to roll four
     if (bot.completedCombos['four'] == false) {
+        // five of the same number:
+        // roll random dice
+        // 1-1-1-R-1
         if (counts.includes(5)) {
+            // roll random dice
             var randomDice = getRandomInt(0, 4);
             for (var i = 0; i <= 4; i++) {
                 if (i == randomDice) {
@@ -490,19 +557,25 @@ function makeDecision() {
                 return true;
             }
         }
+
+        // three of the same number:
+        // roll two other dices
+        // 1-1-1-R-R
         if (counts.includes(3) && bot.completedCombos['fh'] == true) {
             var numsToRoll = [];
 
+            // find two other dices
             for (var i = 0; i <= 5; i++) {
                 if (counts[i] == 1) {
                     numsToRoll.push(i + 1);
                 }
-                else if (counts[i] == 2) {
+                else if (counts[i] == 2 && counts.indexOf(2, 2) != -1) {
                     numsToRoll.push(i + 1);
                     break;
                 }
             }
 
+            // roll them
             for (var i = 0; i <= 4; i++) {
                 if (numsToRoll.includes(state.dices[i].diceScore)) {
                     state.dices[i].setCB(true);
@@ -516,9 +589,14 @@ function makeDecision() {
                 return true;
             }
         }
+
+        // two of the same dices:
+        // roll three other dices
+        // 1-1-R-R-R
         if (counts.includes(2) && bot.completedCombos['fh'] == true) {
             var numsToRoll = [];
 
+            // find three other dices
             var winnerNum = 0;
             for (var i = 0; i <= 5; i++) {
                 if (counts[i] == 2) {
@@ -526,6 +604,7 @@ function makeDecision() {
                 }
             }
 
+            // roll them
             for (var i = 0; i <= 4; i++) {
                 if (state.dices[i].diceScore != winnerNum) {
                     state.dices[i].setCB(true);
@@ -541,38 +620,27 @@ function makeDecision() {
         }
     }
 
+    // try to roll fh
     if (bot.completedCombos['fh'] == false) {
-        if (counts.includes(3)) {
+        // 3 or 4 of the same number:
+        // roll other two
+        // 3-R-3-3-R
+        // or roll other three
+        // 6-R-R-6-R
+        // or one, if there are
+        // another pair of two similar dices
+        // 2-2-R-5-5
+        if (counts.includes(3) || counts.includes(2)) {
             var numsToRoll = [];
             
+            // find two other
             for (var i = 0; i <= 5; i++) {
                 if (counts[i] == 1) {
                     numsToRoll.push(i + 1);
                 }
             }
 
-            for (var i = 0; i <= 4; i++) {
-                if (numsToRoll.includes(state.dices[i].diceScore)) {
-                    state.dices[i].setCB(true);
-                }
-                else {
-                    state.dices[i].setCB(false);
-                }
-            }
-
-            return () => {
-                return true;
-            }
-        }
-        if (counts.includes(2)) {
-            var numsToRoll = [];
-
-            for (var i = 0; i <= 5; i++) {
-                if (counts[i] == 1) {
-                    numsToRoll.push(i + 1);
-                }
-            }
-
+            // roll them
             for (var i = 0; i <= 4; i++) {
                 if (numsToRoll.includes(state.dices[i].diceScore)) {
                     state.dices[i].setCB(true);
@@ -588,10 +656,15 @@ function makeDecision() {
         }
     }
 
+    // try to roll street
     if (bot.completedCombos['street'] == false) {
+        // if there are only 2 duplicates:
+        // roll one of the duplicates
+        // 1-2-R-4-5
         if (counts.includes(2) && !counts.includes(3)) {
             var numsToRoll = [];
 
+            // find duplicate
             for (var i = 0; i <= 5; i++) {
                 if (counts[i] == 2) {
                     numsToRoll.push(i + 1);
@@ -599,6 +672,7 @@ function makeDecision() {
                 }
             }
 
+            // roll it
             var tmp = false;
             for (var i = 0; i <= 4; i++) {
                 if (numsToRoll.includes(state.dices[i].diceScore) && !tmp) {
@@ -614,18 +688,21 @@ function makeDecision() {
                 return true;
             }
         }
+
+        // if there are no duplicates:
+        // there MUST be a combination of 1 and 6
+        // which is not suitable for the combo
+        // so we roll 6
+        // 1-2-3-4-R
         if (!counts.includes(2) && !counts.includes(3) && !counts.includes(4)) {
             var numsToRoll = [];
             
-
+            // find dice with 6
             if (counts[0] == 1 && counts[5] == 1) {
                 numsToRoll.push(6);
             }
 
-            if (numsToRoll.length == 0) {
-
-            }
-
+            // roll it
             var tmp = false;
             for (var i = 0; i <= 4; i++) {
                 if (numsToRoll.includes(state.dices[i].diceScore) && !tmp) {
@@ -643,7 +720,11 @@ function makeDecision() {
         }
     }
 
+    // try to roll general (lowest priority)
     if (bot.completedCombos['general'] == false) {
+        // 4 duplicates:
+        // roll the last dice
+        // 2-2-R-2-2
         if (counts.includes(4) &&
             bot.completedCombos['fh'] == true) {
 
@@ -661,6 +742,10 @@ function makeDecision() {
                 return true;
             }
         }
+
+        // 3 duplicates:
+        // roll other dices
+        // 2-R-R-2-2
         if (counts.includes(3) &&
             bot.completedCombos['four'] == true &&
             bot.completedCombos['fh'] == true) {
@@ -691,6 +776,10 @@ function makeDecision() {
                 return true;
             }
         }
+
+        // 2 duplicates:
+        // you know what happens
+        // 6-R-R-6-R
         if (counts.includes(2) &&
             bot.completedCombos['four'] == true &&
             bot.completedCombos['fh'] == true &&
@@ -721,6 +810,6 @@ function makeDecision() {
     }
 
     return () => {
-        return true;
+        return true; // bot will roll again
     }
 }
