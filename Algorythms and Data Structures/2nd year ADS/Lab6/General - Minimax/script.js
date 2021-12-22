@@ -23,11 +23,18 @@ let bScoreCont = document.getElementById('b-score');
 // let diceFiveCb = document.getElementById('dice-5-cb');
 let rollButton = document.getElementById('roll-btn');
 let keepButton = document.getElementById('keep-btn');
+let playerBox = document.getElementById('p-score-box');
+let botBox = document.getElementById('b-score-box');
+let roundCont = document.getElementById('round');
 
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 class Player {
@@ -61,8 +68,10 @@ class Player {
 
 class Dice {
     constructor(num) {
-        this.dice = document.getElementById('dice-' + num);
-        this.cb = document.getElementById('dice-' + num + '-cb');
+        this.dice = document.getElementById('dice-' + num)
+            .getElementsByClassName('inner-dice')[0];
+        this.cb = document.getElementById('dice-' + num)
+            .getElementsByClassName('dice-' + num + '-cb')[0];
         this.score = 1;
         this.number = num;
     }
@@ -73,9 +82,27 @@ class Dice {
 
     setCB(value = true) { this.cb.checked = value; }
 
-    rollDice() {
+    async rollDice() {
         if (this.cb.checked == false) return;
+        this.animation(true);
+        await sleep(1000);
         this.score = getRandomInt(1, 6);
+        this.animation();
+    }
+
+    animation(isShuffling = false) {
+        this.dice.getElementsByClassName('animation')[0].classList.add('hidden');
+        for (var i = 1; i <= 6; i++) {
+            this.dice.getElementsByClassName(i + '')[0].classList.add('hidden');
+        }
+
+        if (isShuffling) {
+            this.dice.getElementsByClassName('animation')[0].classList.add('shake');
+            this.dice.getElementsByClassName('animation')[0].classList.remove('hidden');
+        }
+        else {
+            this.dice.getElementsByClassName(this.score + '')[0].classList.remove('hidden');
+        }
     }
 }
 
@@ -100,6 +127,10 @@ class State {
         return combo;
     }
 
+    get currentRound() {
+        return this.round;
+    }
+
     get isOver() { return this.over; }
 
     get combination() { return this.combo; }
@@ -121,7 +152,7 @@ class State {
 
         this.rollNumber++;
         if (this.rollNumber == 1) {
-            this.dices.forEach(dice => {
+            this.dices.forEach(dice => {    
                 dice.setCB();
             });
         }
@@ -144,10 +175,12 @@ class State {
                 bot.score += this.combo.value;
             }
         }
+        if (!playerTurn) {
+            this.round += 1;
+        } 
         playerTurn = !playerTurn;
         this.rollNumber = 0;
-        this.round += 1;
-        if (this.round > 20) {
+        if (this.round > 10) {
             this.over = true;
         }
     }
@@ -190,6 +223,7 @@ class State {
                 if (player.completedCombos["general"] == false) {
                     if (this.rollNumber == 1) {
                         value = 100;
+                        this.over = true;
                     } else { value = 60; }
                     name = "general";
                 }
@@ -258,7 +292,8 @@ class State {
                 }
             }
         }
-        else {
+
+        if (name == "") {
             if (playerTurn) {
                 for (var i = 6; i >= 1; i--) {
                     if (player.completedCombos[i + ""] == false && counts[i - 1] != 0) {
@@ -296,8 +331,20 @@ let state = new State();
 
 // update interface
 function updateStats() {
+    if (playerTurn) {
+        playerBox.classList.add('active-player');
+        botBox.classList.remove('active-player');
+    }
+    else {
+        playerBox.classList.remove('active-player');
+        botBox.classList.add('active-player');
+    }
+
+    roundCont.innerText = state.currentRound;
+
     pScoreCont.innerText = player.scoreValue;
     bScoreCont.innerText = bot.scoreValue;
+
     if (!playerTurn) {
         for (var [key, value] of Object.entries(player.completedCombos)) {
             if (value == true) {
@@ -314,17 +361,15 @@ function updateStats() {
             }
         }
     }
-    
-    state.dices.forEach(dice => {
-        dice.dice.innerText = dice.diceScore;
-    });
 
     if (state.isOver) {
+        playerBox.classList.remove('active-player');
+        botBox.classList.remove('active-player');
         if (player.scoreValue > bot.scoreValue) {
-            pScoreCont.innerText += ' - Winner!';
+            playerBox.classList.add('winner');
         }
         else {
-            bScoreCont.innerText += " - Winner!";
+            botBox.classList.add('winner');
         }
     }
 }
@@ -332,13 +377,21 @@ updateStats();
 
 
 // bind buttons
-function rollAction() {
+async function rollAction() {
     state.roll();
+
+    rollButton.onclick = () => {};
+    keepButton.onclick = () => {};
+
+    await sleep(1000);
+
     state.calcValue();
-    updateStats();
+
+    rollButton.onclick = rollAction;
+    keepButton.onclick = keepAction;
 }
 function keepAction() {
-    state.calcValue();
+    // state.calcValue();
     state.keep();
     updateStats();
 }
