@@ -23,6 +23,7 @@ let bScoreCont = document.getElementById('b-score');
 // let diceFiveCb = document.getElementById('dice-5-cb');
 let rollButton = document.getElementById('roll-btn');
 let keepButton = document.getElementById('keep-btn');
+let lotButton = document.getElementById('lot-btn');
 let playerBox = document.getElementById('p-score-box');
 let botBox = document.getElementById('b-score-box');
 let roundCont = document.getElementById('round');
@@ -323,23 +324,28 @@ class State {
 
 
 // variables and data
+let afterLot = false;
 let playerTurn = true;
 let player = new Player();
 let bot = new Player();
 let state = new State();
 
 
+
+
 // update interface
 function updateStats() {
-    if (playerTurn) {
-        playerBox.classList.add('active-player');
-        botBox.classList.remove('active-player');
+    if (afterLot) {
+        if (playerTurn) {
+            playerBox.classList.add('active-player');
+            botBox.classList.remove('active-player');
+        }
+        else {
+            playerBox.classList.remove('active-player');
+            botBox.classList.add('active-player');
+        }
     }
-    else {
-        playerBox.classList.remove('active-player');
-        botBox.classList.add('active-player');
-    }
-
+    
     roundCont.innerText = state.currentRound;
 
     pScoreCont.innerText = player.scoreValue;
@@ -391,11 +397,34 @@ async function rollAction() {
     keepButton.onclick = keepAction;
 }
 function keepAction() {
-    // state.calcValue();
     state.keep();
     updateStats();
 }
+function lotAction() {
+    state.dices.forEach(async dice => {
+        if (dice.diceNumber != 3) {
+            dice.setCB(false);
+        }
+        else {
+            dice.setCB(true);
+            dice.rollDice();
+            await sleep(1000);
+            if (dice.diceScore <= 3) {
+                playerTurn = true;
+            }
+            else {
+                playerTurn = false;
+            }
+            lotButton.classList.add('hidden');
+            rollButton.classList.remove('hidden');
+            keepButton.classList.remove('hidden');
+            afterLot = true;
+            updateStats();
+        }
+    }); 
+}
 rollButton.onclick = rollAction;
 keepButton.onclick = keepAction;
+lotButton.onclick = lotAction;
 
 
