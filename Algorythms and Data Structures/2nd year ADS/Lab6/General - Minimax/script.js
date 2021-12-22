@@ -1,26 +1,6 @@
 // interface elements
 let pScoreCont = document.getElementById('p-score');
 let bScoreCont = document.getElementById('b-score');
-// let tGeneral = document.getElementById('t-general');
-// let tFour = document.getElementById('t-four');
-// let tFh = document.getElementById('t-th');
-// let tStreet = document.getElementById('t-street');
-// let tSix = document.getElementById('t-6');
-// let tFive = document.getElementById('t-5');
-// let tFours = document.getElementById('t-4');
-// let tThree = document.getElementById('t-3');
-// let tTwo = document.getElementById('t-2');
-// let tOne = document.getElementById('t-1');
-// let diceOne = document.getElementById('dice-1');
-// let diceOneCb = document.getElementById('dice-1-cb');
-// let diceTwo = document.getElementById('dice-2');
-// let diceTwoCb = document.getElementById('dice-2-cb');
-// let diceThree = document.getElementById('dice-3');
-// let diceThreeCb = document.getElementById('dice-3-cb');
-// let diceFour = document.getElementById('dice-4');
-// let diceFourCb = document.getElementById('dice-4-cb');
-// let diceFive = document.getElementById('dice-5');
-// let diceFiveCb = document.getElementById('dice-5-cb');
 let rollButton = document.getElementById('roll-btn');
 let keepButton = document.getElementById('keep-btn');
 let lotButton = document.getElementById('lot-btn');
@@ -128,9 +108,7 @@ class State {
         return combo;
     }
 
-    get currentRound() {
-        return this.round;
-    }
+    get currentRound() { return this.round; }
 
     get isOver() { return this.over; }
 
@@ -331,8 +309,6 @@ let bot = new Player();
 let state = new State();
 
 
-
-
 // update interface
 function updateStats() {
     if (afterLot) {
@@ -399,6 +375,16 @@ async function rollAction() {
 function keepAction() {
     state.keep();
     updateStats();
+
+    if (!playerTurn) {
+        rollButton.onclick = () => {};
+        keepButton.onclick = () => {};
+        botCore();
+    }
+    else {
+        rollButton.onclick = rollAction;
+        keepButton.onclick = keepAction;
+    }
 }
 function lotAction() {
     state.dices.forEach(async dice => {
@@ -414,12 +400,18 @@ function lotAction() {
             }
             else {
                 playerTurn = false;
+                rollButton.onclick = () => { };
+                keepButton.onclick = () => { };
             }
             lotButton.classList.add('hidden');
             rollButton.classList.remove('hidden');
             keepButton.classList.remove('hidden');
             afterLot = true;
             updateStats();
+            if (!playerTurn) {
+                await sleep(1000);
+                botCore();
+            }
         }
     }); 
 }
@@ -428,3 +420,307 @@ keepButton.onclick = keepAction;
 lotButton.onclick = lotAction;
 
 
+async function botCore() {
+    console.log('bot launched');
+    while (true) {
+        await rollAction();
+        await sleep(1000);
+        var decision = makeDecision();
+        var toContinue = decision();
+        if (toContinue == false) break;
+        if (state.rollNumber >= 3) {
+            keepAction();
+            break;
+        }
+    }
+}
+
+function makeDecision() {
+    if (state.combination.name != "" || state.combination != undefined) {
+        if (isNaN(state.combination.name)) {
+            return () => {
+                keepAction();
+                return false;
+            };
+        }
+    }
+
+    let counts = [0, 0, 0, 0, 0, 0];
+    for (var i = 0; i < 5; i++) {
+        switch (state.dices[i].score) {
+            case 1:
+                counts[0] += 1;
+                break;
+
+            case 2:
+                counts[1] += 1;
+                break;
+
+            case 3:
+                counts[2] += 1;
+                break;
+
+            case 4:
+                counts[3] += 1;
+                break;
+
+            case 5:
+                counts[4] += 1;
+                break;
+
+            case 6:
+                counts[5] += 1;
+                break;
+        }
+    }
+
+    if (bot.completedCombos['four'] == false) {
+        if (counts.includes(5)) {
+            var randomDice = getRandomInt(0, 4);
+            for (var i = 0; i <= 4; i++) {
+                if (i == randomDice) {
+                    state.dices[i].setCB(true);
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+            
+            return () => {
+                return true;
+            }
+        }
+        if (counts.includes(3) && bot.completedCombos['fh'] == true) {
+            var numsToRoll = [];
+
+            for (var i = 0; i <= 5; i++) {
+                if (counts[i] == 1) {
+                    numsToRoll.push(i + 1);
+                }
+                else if (counts[i] == 2) {
+                    numsToRoll.push(i + 1);
+                    break;
+                }
+            }
+
+            for (var i = 0; i <= 4; i++) {
+                if (numsToRoll.includes(state.dices[i].diceScore)) {
+                    state.dices[i].setCB(true);
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+        if (counts.includes(2) && bot.completedCombos['fh'] == true) {
+            var numsToRoll = [];
+
+            var winnerNum = 0;
+            for (var i = 0; i <= 5; i++) {
+                if (counts[i] == 2) {
+                    winnerNum = i + 1;
+                }
+            }
+
+            for (var i = 0; i <= 4; i++) {
+                if (state.dices[i].diceScore != winnerNum) {
+                    state.dices[i].setCB(true);
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+    }
+
+    if (bot.completedCombos['fh'] == false) {
+        if (counts.includes(3)) {
+            var numsToRoll = [];
+            
+            for (var i = 0; i <= 5; i++) {
+                if (counts[i] == 1) {
+                    numsToRoll.push(i + 1);
+                }
+            }
+
+            for (var i = 0; i <= 4; i++) {
+                if (numsToRoll.includes(state.dices[i].diceScore)) {
+                    state.dices[i].setCB(true);
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+        if (counts.includes(2)) {
+            var numsToRoll = [];
+
+            for (var i = 0; i <= 5; i++) {
+                if (counts[i] == 1) {
+                    numsToRoll.push(i + 1);
+                }
+            }
+
+            for (var i = 0; i <= 4; i++) {
+                if (numsToRoll.includes(state.dices[i].diceScore)) {
+                    state.dices[i].setCB(true);
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+    }
+
+    if (bot.completedCombos['street'] == false) {
+        if (counts.includes(2) && !counts.includes(3)) {
+            var numsToRoll = [];
+
+            for (var i = 0; i <= 5; i++) {
+                if (counts[i] == 2) {
+                    numsToRoll.push(i + 1);
+                    break;
+                }
+            }
+
+            var tmp = false;
+            for (var i = 0; i <= 4; i++) {
+                if (numsToRoll.includes(state.dices[i].diceScore) && !tmp) {
+                    state.dices[i].setCB(true);
+                    tmp = true;
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+        if (!counts.includes(2) && !counts.includes(3) && !counts.includes(4)) {
+            var numsToRoll = [];
+            
+
+            if (counts[0] == 1 && counts[5] == 1) {
+                numsToRoll.push(6);
+            }
+
+            if (numsToRoll.length == 0) {
+
+            }
+
+            var tmp = false;
+            for (var i = 0; i <= 4; i++) {
+                if (numsToRoll.includes(state.dices[i].diceScore) && !tmp) {
+                    state.dices[i].setCB(true);
+                    tmp = true;
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+    }
+
+    if (bot.completedCombos['general'] == false) {
+        if (counts.includes(4) &&
+            bot.completedCombos['fh'] == true) {
+
+            var numToRoll = counts.indexOf(1) + 1;
+            state.dices.forEach(dice => {
+                if (dice.diceScore == numToRoll) {
+                    dice.setCB(true);
+                }
+                else {
+                    dice.setCB(false);
+                }
+            });
+
+            return () => {
+                return true;
+            }
+        }
+        if (counts.includes(3) &&
+            bot.completedCombos['four'] == true &&
+            bot.completedCombos['fh'] == true) {
+
+            var numsToRoll = [];
+
+            var numOne = counts.indexOf(1);
+            var numTwo = numOne == -1 ? counts.indexOf(2) : counts.indexOf(1, 2);
+
+            if (numOne != -1) {
+                numsToRoll.push(numOne + 1);
+                numsToRoll.push(numTwo + 1);
+            }
+            else {
+                numsToRoll.push(numTwo + 1);
+            }
+
+            state.dices.forEach(dice => {
+                if (numsToRoll.includes(dice.diceScore)) {
+                    dice.setCB(true);
+                }
+                else {
+                    dice.setCB(false);
+                }
+            });
+
+            return () => {
+                return true;
+            }
+        }
+        if (counts.includes(2) &&
+            bot.completedCombos['four'] == true &&
+            bot.completedCombos['fh'] == true &&
+            bot.completedCombos['street'] == true) {
+
+            var numsToRoll = [];
+
+            var winnerNum = 0;
+            for (var i = 0; i <= 5; i++) {
+                if (counts[i] == 2) {
+                    winnerNum = i + 1;
+                }
+            }
+
+            for (var i = 0; i <= 4; i++) {
+                if (state.dices[i].diceScore != winnerNum) {
+                    state.dices[i].setCB(true);
+                }
+                else {
+                    state.dices[i].setCB(false);
+                }
+            }
+
+            return () => {
+                return true;
+            }
+        }
+    }
+
+    return () => {
+        return true;
+    }
+}
